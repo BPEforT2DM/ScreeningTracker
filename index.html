@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="ms">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BPE T2DM Tracker</title>
-    
+
     <!-- SheetJS for Excel Export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    
+
     <!-- Chart.js for Interactive Donut Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    
+
     <style>
         :root {
             --bg-color: #e8f2fc;
@@ -203,7 +204,8 @@
             box-shadow: 0 6px 20px rgba(0, 113, 227, 0.14);
         }
 
-        h1, .main-title {
+        h1,
+        .main-title {
             text-align: center;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
             font-weight: 700;
@@ -721,16 +723,44 @@
         }
 
         /* High-Contrast Pastel Palette: Yellow, Pink, Green */
-        .dot-kb { background-color: #ffeaa7; border: 1px solid rgba(0, 0, 0, 0.18); }
-        .dot-kl { background-color: #ff7675; }
-        .dot-pc { background-color: #55efc4; }
+        .dot-kb {
+            background-color: #ffeaa7;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+        }
+
+        .dot-kl {
+            background-color: #ff7675;
+        }
+
+        .dot-pc {
+            background-color: #55efc4;
+        }
+
         /* Championship legend dots (exact match to donut slice colours) */
-        .dot-m-kb { background-color: #2563EB; }
-        .dot-m-kl { background-color: #06B6D4; }
-        .dot-m-pc { background-color: #BAE6FD; border: 1px solid rgba(0, 0, 0, 0.08); }
-        .dot-y-kb { background-color: #7C3AED; }
-        .dot-y-kl { background-color: #F43F5E; }
-        .dot-y-pc { background-color: #F472B6; }
+        .dot-m-kb {
+            background-color: #2563EB;
+        }
+
+        .dot-m-kl {
+            background-color: #06B6D4;
+        }
+
+        .dot-m-pc {
+            background-color: #BAE6FD;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .dot-y-kb {
+            background-color: #7C3AED;
+        }
+
+        .dot-y-kl {
+            background-color: #F43F5E;
+        }
+
+        .dot-y-pc {
+            background-color: #F472B6;
+        }
 
         /* Cute Popover Tooltip (Pastel Liquid Glass Aesthetic) */
         .chartjs-popover-tooltip {
@@ -800,7 +830,7 @@
             -webkit-appearance: none;
             font-family: inherit;
             color: var(--text-main);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
             transition: all 0.3s ease;
             cursor: pointer;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231d1d1f' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
@@ -856,18 +886,20 @@
             display: flex;
             gap: 12px;
         }
-        
+
         .form-row .form-col {
             flex: 1;
         }
 
-        .checkbox-group, .radio-group {
+        .checkbox-group,
+        .radio-group {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
 
-        .checkbox-group label, .radio-group label {
+        .checkbox-group label,
+        .radio-group label {
             display: flex;
             align-items: center;
             gap: 6px;
@@ -883,8 +915,13 @@
         }
 
         /* Responsive value spans — mobile alt hidden by default */
-        .val-mobile { display: none; }
-        .val-desktop { display: inline; }
+        .val-mobile {
+            display: none;
+        }
+
+        .val-desktop {
+            display: inline;
+        }
 
         .data-table {
             width: 100%;
@@ -899,12 +936,12 @@
             padding: 12px;
             font-weight: 500;
             color: var(--text-secondary);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .data-table td {
             padding: 14px 12px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             color: #333;
         }
 
@@ -926,9 +963,20 @@
             white-space: nowrap;
         }
 
-        .badge.referred { background: rgba(52, 199, 89, 0.15); color: #248a3d; }
-        .badge.pending { background: rgba(255, 149, 0, 0.15); color: #cc7a00; }
-        .badge.completed { background: rgba(0, 113, 227, 0.15); color: #005bb5; }
+        .badge.referred {
+            background: rgba(52, 199, 89, 0.15);
+            color: #248a3d;
+        }
+
+        .badge.pending {
+            background: rgba(255, 149, 0, 0.15);
+            color: #cc7a00;
+        }
+
+        .badge.completed {
+            background: rgba(0, 113, 227, 0.15);
+            color: #005bb5;
+        }
 
         /* Delete / Padam Button */
         .btn-padam {
@@ -944,6 +992,7 @@
             transition: all 0.2s ease;
             white-space: nowrap;
         }
+
         .btn-padam:hover {
             background: rgba(255, 77, 79, 0.25);
             border-color: rgba(255, 77, 79, 0.6);
@@ -964,29 +1013,53 @@
             transition: all 0.2s ease;
             white-space: nowrap;
         }
+
         .btn-edit:hover {
             background: rgba(0, 113, 227, 0.25);
             border-color: rgba(0, 113, 227, 0.6);
             transform: translateY(-1px);
         }
+
         .edit-modal-overlay {
-            position: fixed; inset: 0; z-index: 10000;
-            display: none; align-items: center; justify-content: center;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
             background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 16px;
         }
-        .edit-modal-overlay.open { display: flex; }
+
+        .edit-modal-overlay.open {
+            display: flex;
+        }
+
         .edit-modal {
-            width: 100%; max-width: 420px;
+            width: 100%;
+            max-width: 420px;
             background: rgba(255, 255, 255, 0.78);
-            backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.7);
-            border-radius: 22px; padding: 24px;
+            border-radius: 22px;
+            padding: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
         }
-        .edit-modal h3 { margin: 0 0 16px; font-size: 1.15rem; }
-        .edit-modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+        .edit-modal h3 {
+            margin: 0 0 16px;
+            font-size: 1.15rem;
+        }
+
+        .edit-modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
 
         /* Action Buttons Group for Table Actions */
         .action-btn-group {
@@ -1059,7 +1132,7 @@
         .btn-toggle-verify.active:hover {
             box-shadow: 0 0 14px rgba(34, 197, 94, 0.75), 0 2px 7px rgba(22, 163, 74, 0.35) !important;
         }
-        
+
         /* Buttons */
         .btn {
             background: var(--accent-blue);
@@ -1093,7 +1166,7 @@
             border: 1px solid var(--glass-border);
             box-shadow: none;
         }
-        
+
         .btn.btn-small:hover {
             background: white;
             transform: translateY(-1px);
@@ -1103,7 +1176,7 @@
         .doc-column {
             justify-content: flex-start;
         }
-        
+
         .doc-card {
             background: rgba(255, 255, 255, 0.4);
             border: 1px solid var(--glass-border);
@@ -1144,7 +1217,7 @@
             font-size: 0.95rem;
             border-radius: 12px;
             flex: 1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .btn-download {
@@ -1176,9 +1249,9 @@
         }
 
         .month-filter-container {
-            display: flex; 
-            justify-content: flex-end; 
-            align-items: center; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
             margin-bottom: 12px;
             gap: 12px;
             flex-wrap: wrap;
@@ -1199,6 +1272,7 @@
             body {
                 padding: 16px 12px;
             }
+
             .header-nav-container {
                 display: flex;
                 flex-wrap: wrap;
@@ -1207,45 +1281,56 @@
                 gap: 12px;
                 margin-bottom: 20px;
             }
+
             .brand-badge {
                 order: 1;
                 padding: 6px 14px;
             }
+
             .brand-text {
                 font-size: 1.05rem;
             }
+
             .dental-icon {
                 width: 36px;
                 height: 24px;
             }
+
             .lang-switch-container {
                 order: 2;
                 margin-left: auto;
             }
+
             .nav-glass-bar {
                 order: 3;
                 width: 100%;
                 justify-content: space-around;
                 padding: 6px 8px;
             }
+
             .nav-tab {
                 padding: 8px 12px;
                 font-size: 0.85rem;
             }
+
             .form-row {
                 flex-direction: column;
             }
+
             .month-filter-container {
                 justify-content: space-between;
                 width: 100%;
             }
+
             .btn.btn-small {
                 flex-grow: 1;
                 text-align: center;
             }
+
             .doc-actions {
                 flex-direction: column;
             }
+
             /* Dashboard Mobile 2x2 Grid Layout */
             .dashboard-container {
                 grid-template-columns: repeat(2, 1fr);
@@ -1253,17 +1338,21 @@
                 margin-bottom: 24px;
                 padding: 0 2px;
             }
+
             .dashboard-header-bar {
                 padding: 10px 14px;
                 gap: 8px;
             }
+
             .dash-header-title-wrap {
                 width: 100%;
                 justify-content: space-between;
             }
+
             .dash-section-title {
                 font-size: 0.95rem;
             }
+
             .dash-header-action {
                 width: 100%;
                 display: flex;
@@ -1271,110 +1360,136 @@
                 align-items: flex-start;
                 gap: 6px;
             }
+
             .dash-selectors-row {
                 width: 100%;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
+
             .glass-select-wrapper {
                 width: 100%;
             }
+
             .glass-month-select {
                 width: 100%;
                 min-width: 0;
                 font-size: 0.8rem;
                 padding: 6px 24px 6px 10px;
             }
+
             .dash-card {
                 padding: 14px;
                 border-radius: 16px;
             }
+
             .dash-card-title {
                 font-size: 0.88rem;
             }
+
             .dash-card-subtitle {
                 font-size: 0.7rem;
             }
+
             .dash-pill-icon {
                 width: 34px;
                 height: 34px;
                 border-radius: 10px;
                 font-size: 1.05rem;
             }
+
             .dash-metric {
                 font-size: 1.65rem;
                 margin: 2px 0 0 0;
             }
+
             .dash-subgrid {
                 margin: 6px 0 8px 0;
             }
+
             /* Championship Mobile Card & Subgrid */
             .champ-card-group {
                 grid-column: span 2;
                 padding: 14px 12px;
             }
+
             .champ-group-header {
                 margin-bottom: 10px;
                 padding-bottom: 6px;
             }
+
             .champ-master-title {
                 font-size: 1.02rem;
             }
+
             .champ-subgrid {
                 grid-template-columns: 1fr;
                 gap: 0.65rem;
             }
+
             .champ-tier {
                 padding: 8px 6px;
             }
+
             .champ-tier-grid {
                 gap: 0.45rem;
             }
+
             .champ-subcard {
                 padding: 10px 8px;
                 border-radius: 12px;
             }
+
             .champ-subcard-title {
                 font-size: 0.85rem;
             }
+
             .chart-wrapper {
                 width: 76px;
                 height: 76px;
                 margin: 4px auto;
             }
+
             .champ-badge {
                 padding: 5px 4px;
                 min-height: 46px;
             }
+
             .champ-badge-line1 {
                 font-size: 0.80rem;
                 line-height: 1.2;
             }
+
             .champ-badge-line2 {
                 font-size: 0.74rem;
                 line-height: 1.15;
                 margin-top: 2px;
             }
+
             .champ-badge-empty {
                 font-size: 0.75rem;
             }
+
             .chart-legend-dots {
                 gap: 6px;
                 font-size: 0.66rem;
             }
 
             /* ── Title: two-line split on mobile ── */
-            html, body {
+            html,
+            body {
                 max-width: 100vw;
                 overflow-x: hidden;
             }
+
             .main-title {
                 font-size: 1.55rem;
                 line-height: 1.25;
                 margin-bottom: 18px;
                 letter-spacing: -0.3px;
             }
+
             .title-sep {
                 display: block;
                 height: 0;
@@ -1382,6 +1497,7 @@
                 line-height: 0;
                 font-size: 0;
             }
+
             .title-line1,
             .title-line2 {
                 display: block;
@@ -1392,9 +1508,11 @@
             .dash-subcard-name .subcard-name-full {
                 display: none;
             }
+
             .dash-subcard-name .subcard-name-short {
                 display: inline;
             }
+
             .dash-subcard-name {
                 font-size: 0.72rem;
                 white-space: normal;
@@ -1402,6 +1520,7 @@
                 overflow: visible;
                 text-overflow: unset;
             }
+
             .dash-subcard {
                 padding: 6px 10px;
             }
@@ -1417,6 +1536,7 @@
                 text-overflow: unset;
                 word-break: break-word;
             }
+
             .dash-card {
                 overflow: visible;
             }
@@ -1425,38 +1545,51 @@
             .data-table {
                 font-size: 0.78rem;
             }
+
             .data-table th,
             .data-table td {
                 padding: 6px 4px;
             }
+
             .badge {
                 padding: 3px 6px;
                 font-size: 0.72rem;
             }
+
             .btn-edit {
                 padding: 4px 8px;
                 font-size: 0.72rem;
                 border-radius: 8px;
             }
+
             .btn-padam {
                 padding: 4px 8px;
                 font-size: 0.72rem;
                 border-radius: 8px;
             }
+
             .action-btn-group {
                 gap: 4px;
             }
+
             .btn-toggle {
                 width: 24px;
                 height: 24px;
             }
+
             .btn-toggle svg {
                 width: 11px;
                 height: 11px;
             }
+
             /* Show short-form on mobile, hide full-form */
-            .val-desktop { display: none !important; }
-            .val-mobile  { display: inline !important; }
+            .val-desktop {
+                display: none !important;
+            }
+
+            .val-mobile {
+                display: inline !important;
+            }
         }
 
         /* Printable Area */
@@ -1470,23 +1603,27 @@
             border: 1px solid rgba(186, 230, 253, 0.5);
             box-shadow: 0 6px 24px rgba(186, 230, 253, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8);
         }
+
         .champ-tier:nth-child(2) {
             background: linear-gradient(160deg, rgba(252, 231, 243, 0.6), rgba(255, 255, 255, 0.3));
             border: 1px solid rgba(251, 207, 232, 0.5);
             box-shadow: 0 6px 24px rgba(251, 207, 232, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8);
         }
+
         .champ-tier:nth-child(1) .champ-tier-label {
             color: #0369a1;
             background: rgba(186, 230, 253, 0.55);
             border-radius: 10px;
             padding: 4px 8px;
         }
+
         .champ-tier:nth-child(2) .champ-tier-label {
             color: #be185d;
             background: rgba(251, 207, 232, 0.6);
             border-radius: 10px;
             padding: 4px 8px;
         }
+
         .chart-center {
             position: absolute;
             inset: 0;
@@ -1497,55 +1634,82 @@
             pointer-events: none;
             line-height: 1.05;
         }
-        .chart-center-num { font-size: 1.15rem; font-weight: 800; color: #0f172a; }
-        .chart-center-unit { font-size: 0.68rem; font-weight: 500; color: #475569; }
+
+        .chart-center-num {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .chart-center-unit {
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: #475569;
+        }
 
         /* Desktop two-column dashboard: KK/KP stacked left, Championship right */
         @media (min-width: 769px) {
             .dashboard-container {
                 grid-template-columns: minmax(0, 31fr) minmax(0, 69fr);
             }
-            .dashboard-container > .dash-card:not(.champ-card-group) {
+
+            .dashboard-container>.dash-card:not(.champ-card-group) {
                 grid-column: 1;
                 padding: 1rem 1.25rem;
             }
-            .dashboard-container > .dash-card:nth-child(2):not(.champ-card-group) { grid-row: 2; }
-            .dashboard-container > .dash-card:nth-child(3):not(.champ-card-group) { grid-row: 3; }
-            .dashboard-container > .dash-card:not(.champ-card-group) .dash-total-box {
+
+            .dashboard-container>.dash-card:nth-child(2):not(.champ-card-group) {
+                grid-row: 2;
+            }
+
+            .dashboard-container>.dash-card:nth-child(3):not(.champ-card-group) {
+                grid-row: 3;
+            }
+
+            .dashboard-container>.dash-card:not(.champ-card-group) .dash-total-box {
                 margin: 2px 0 4px 0;
             }
-            .dashboard-container > .dash-card:not(.champ-card-group) .dash-metric {
+
+            .dashboard-container>.dash-card:not(.champ-card-group) .dash-metric {
                 font-size: 2rem;
                 margin: 0;
             }
-            .dashboard-container > .dash-card:not(.champ-card-group) .dash-subgrid {
+
+            .dashboard-container>.dash-card:not(.champ-card-group) .dash-subgrid {
                 flex: 1;
                 margin: 8px 0 0 0;
             }
-            .dashboard-container > .dash-card:not(.champ-card-group) .dash-subcard {
+
+            .dashboard-container>.dash-card:not(.champ-card-group) .dash-subcard {
                 flex: 1;
                 padding: 5px 12px;
             }
-            .dashboard-container > .dash-card.champ-card-group {
+
+            .dashboard-container>.dash-card.champ-card-group {
                 grid-column: 2;
                 grid-row: 2 / span 2;
                 justify-content: flex-start;
                 padding: 1rem 1.25rem 1.25rem 1.25rem;
             }
+
             .champ-subgrid {
                 flex: 1;
                 gap: 1.25rem;
             }
+
             .champ-tier {
                 padding: 12px 14px 14px 14px;
                 gap: 10px;
             }
+
             .champ-tier-grid {
                 gap: 0.9rem;
             }
+
             .champ-subcard {
                 padding: 12px 10px 10px 10px;
             }
+
             .chart-wrapper {
                 width: 120px;
                 height: 120px;
@@ -1557,9 +1721,12 @@
             body * {
                 visibility: hidden;
             }
-            #printable-slip, #printable-slip * {
+
+            #printable-slip,
+            #printable-slip * {
                 visibility: visible;
             }
+
             #printable-slip {
                 display: block;
                 position: absolute;
@@ -1571,26 +1738,31 @@
                 font-family: Arial, sans-serif;
                 color: black;
             }
+
             .slip-header {
                 text-align: center;
                 border-bottom: 2px solid black;
                 padding-bottom: 20px;
                 margin-bottom: 30px;
             }
+
             .slip-header h2 {
                 margin: 0 0 10px 0;
             }
+
             .slip-header p {
                 margin: 0;
                 font-size: 1.1rem;
                 color: #333;
             }
+
             .slip-body {
                 font-size: 1.1rem;
                 line-height: 2.2;
                 max-width: 800px;
                 margin: 0 auto;
             }
+
             .bpe-grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -1599,6 +1771,7 @@
                 margin: 40px auto;
                 border: 2px solid black;
             }
+
             .bpe-cell {
                 border: 1px solid black;
                 height: 60px;
@@ -1607,15 +1780,18 @@
                 justify-content: center;
                 font-size: 1.5rem;
             }
+
             .signature-box {
                 margin-top: 60px;
                 display: flex;
                 justify-content: flex-end;
             }
+
             .signature-box div {
                 text-align: center;
                 width: 250px;
             }
+
             .signature-line {
                 border-bottom: 1px solid black;
                 margin-bottom: 10px;
@@ -1624,6 +1800,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header class="header-nav-container">
@@ -1641,13 +1818,22 @@
                         <stop offset="100%" stop-color="#dceafd" />
                     </linearGradient>
                 </defs>
-                <path d="M 5 45 Q 25 35 45 42 Q 65 30 85 45 Q 105 32 125 45 Q 145 35 155 45 C 155 75 140 90 80 90 C 20 90 5 75 5 45 Z" fill="url(#gumGrad)" />
-                <path d="M 18 20 C 18 10, 25 8, 35 10 C 45 8, 50 10, 50 20 C 52 35, 52 50, 47 72 C 44 76, 40 75, 38 66 C 35 55, 30 55, 27 66 C 25 75, 21 76, 18 72 C 14 50, 16 35, 18 20 Z" fill="url(#toothGrad)" />
-                <path d="M 58 18 C 58 8, 65 6, 75 8 C 85 6, 90 8, 90 18 C 92 33, 92 48, 87 70 C 84 74, 80 73, 78 64 C 75 53, 70 53, 67 64 C 65 73, 61 74, 58 70 C 54 48, 56 33, 58 18 Z" fill="url(#toothGrad)" />
-                <path d="M 98 22 C 98 12, 105 10, 115 12 C 125 10, 130 12, 130 22 C 132 37, 132 52, 127 74 C 124 78, 120 77, 118 68 C 115 57, 110 57, 107 68 C 105 77, 101 78, 98 74 C 94 52, 96 37, 98 22 Z" fill="url(#toothGrad)" />
+                <path
+                    d="M 5 45 Q 25 35 45 42 Q 65 30 85 45 Q 105 32 125 45 Q 145 35 155 45 C 155 75 140 90 80 90 C 20 90 5 75 5 45 Z"
+                    fill="url(#gumGrad)" />
+                <path
+                    d="M 18 20 C 18 10, 25 8, 35 10 C 45 8, 50 10, 50 20 C 52 35, 52 50, 47 72 C 44 76, 40 75, 38 66 C 35 55, 30 55, 27 66 C 25 75, 21 76, 18 72 C 14 50, 16 35, 18 20 Z"
+                    fill="url(#toothGrad)" />
+                <path
+                    d="M 58 18 C 58 8, 65 6, 75 8 C 85 6, 90 8, 90 18 C 92 33, 92 48, 87 70 C 84 74, 80 73, 78 64 C 75 53, 70 53, 67 64 C 65 73, 61 74, 58 70 C 54 48, 56 33, 58 18 Z"
+                    fill="url(#toothGrad)" />
+                <path
+                    d="M 98 22 C 98 12, 105 10, 115 12 C 125 10, 130 12, 130 22 C 132 37, 132 52, 127 74 C 124 78, 120 77, 118 68 C 115 57, 110 57, 107 68 C 105 77, 101 78, 98 74 C 94 52, 96 37, 98 22 Z"
+                    fill="url(#toothGrad)" />
                 <path d="M 21 20 C 22 16, 26 14, 32 15 C 29 17, 23 23, 22 30 Z" fill="rgba(255, 255, 255, 0.85)" />
                 <path d="M 61 18 C 62 14, 66 12, 72 13 C 69 15, 63 21, 62 28 Z" fill="rgba(255, 255, 255, 0.85)" />
-                <path d="M 101 22 C 102 18, 106 16, 112 17 C 109 19, 103 25, 102 32 Z" fill="rgba(255, 255, 255, 0.85)" />
+                <path d="M 101 22 C 102 18, 106 16, 112 17 C 109 19, 103 25, 102 32 Z"
+                    fill="rgba(255, 255, 255, 0.85)" />
             </svg>
             <span class="brand-text">BPEforT2DM</span>
         </div>
@@ -1659,7 +1845,8 @@
         </nav>
 
         <div class="lang-switch-container">
-            <div class="lang-pill-switch active-bm" id="lang-switch" onclick="toggleLang()" role="button" aria-label="Toggle Language EN / BM">
+            <div class="lang-pill-switch active-bm" id="lang-switch" onclick="toggleLang()" role="button"
+                aria-label="Toggle Language EN / BM">
                 <div class="lang-pill-slider"></div>
                 <span class="lang-pill-opt opt-en">EN</span>
                 <span class="lang-pill-opt opt-bm">BM</span>
@@ -1667,7 +1854,8 @@
         </div>
     </header>
 
-    <h1 class="main-title"><span class="title-line1">BPE T2DM</span><span class="title-sep"> </span><span class="title-line2">Screening Tracker</span></h1>
+    <h1 class="main-title"><span class="title-line1">BPE T2DM</span><span class="title-sep"> </span><span
+            class="title-line2">Screening Tracker</span></h1>
 
     <!-- Interactive Monthly Dashboard -->
     <section class="dashboard-container" id="monthly-dashboard" aria-label="Monthly Dashboard">
@@ -1684,11 +1872,13 @@
                 <span class="dash-picker-label" data-i18n="dash_select_month_label">Bulan & Tahun:</span>
                 <div class="dash-selectors-row">
                     <div class="glass-select-wrapper">
-                        <select id="dash-select-month" class="glass-month-select glass-select-month" aria-label="Pilih Bulan"></select>
+                        <select id="dash-select-month" class="glass-month-select glass-select-month"
+                            aria-label="Pilih Bulan"></select>
                         <span class="select-chevron" aria-hidden="true">▾</span>
                     </div>
                     <div class="glass-select-wrapper">
-                        <select id="dash-select-year" class="glass-month-select glass-select-year" aria-label="Pilih Tahun"></select>
+                        <select id="dash-select-year" class="glass-month-select glass-select-year"
+                            aria-label="Pilih Tahun"></select>
                         <span class="select-chevron" aria-hidden="true">▾</span>
                     </div>
                 </div>
@@ -1802,7 +1992,8 @@
             <div class="dash-card-header champ-group-header">
                 <div class="dash-card-header-text">
                     <span class="dash-card-subtitle dash-month-sub-label">September 2026</span>
-                    <div class="dash-card-title champ-master-title">🏆 <span data-i18n="champ_master_title">Kejuaraan BPE</span></div>
+                    <div class="dash-card-title champ-master-title">🏆 <span data-i18n="champ_master_title">Kejuaraan
+                            BPE</span></div>
                 </div>
                 <div class="dash-pill-icon pill-purple" aria-hidden="true">🏆</div>
             </div>
@@ -1810,78 +2001,91 @@
             <div class="champ-subgrid">
                 <!-- Tier 1: Monthly -->
                 <div class="champ-tier">
-                    <div class="champ-tier-label"><span data-i18n="champ_tier_monthly">Bulanan</span> &middot; <span class="champ-tier-month">November 2026</span></div>
+                    <div class="champ-tier-label"><span data-i18n="champ_tier_monthly">Bulanan</span> &middot; <span
+                            class="champ-tier-month">November 2026</span></div>
                     <div class="champ-tier-grid">
-                    <div class="champ-subcard">
-                        <div class="champ-subcard-title" data-i18n="champ_kk_monthly">Rujukan KK (Bulanan)</div>
-                        <div class="chart-wrapper">
-                            <canvas id="chart-kk-donut" aria-label="Rujukan KK (Bulanan) Donut Chart" role="img"></canvas>
-                            <div class="chart-center" id="chart-kk-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
+                        <div class="champ-subcard">
+                            <div class="champ-subcard-title" data-i18n="champ_kk_monthly">Rujukan KK</div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-kk-donut" aria-label="Rujukan KK Donut Chart" role="img"></canvas>
+                                <div class="chart-center" id="chart-kk-donut-center"><span
+                                        class="chart-center-num">0</span><span class="chart-center-unit">Kes</span>
+                                </div>
+                            </div>
+                            <div class="champ-badge" id="badge-kk-top">
+                                <div class="champ-badge-line1">Tertinggi: -</div>
+                                <div class="champ-badge-line2">(- Kes)</div>
+                            </div>
+                            <div class="chart-legend-dots">
+                                <span><i class="dot dot-m-kb"></i> KB</span>
+                                <span><i class="dot dot-m-kl"></i> KL</span>
+                                <span><i class="dot dot-m-pc"></i> PC</span>
+                            </div>
                         </div>
-                        <div class="champ-badge" id="badge-kk-top">
-                            <div class="champ-badge-line1">Tertinggi: -</div>
-                            <div class="champ-badge-line2">(- Kes)</div>
+                        <div class="champ-subcard">
+                            <div class="champ-subcard-title" data-i18n="champ_kp_monthly">Saringan KP (Bulanan)</div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-kp-donut" aria-label="Saringan KP (Bulanan) Donut Chart"
+                                    role="img"></canvas>
+                                <div class="chart-center" id="chart-kp-donut-center"><span
+                                        class="chart-center-num">0</span><span class="chart-center-unit">Kes</span>
+                                </div>
+                            </div>
+                            <div class="champ-badge" id="badge-kp-top">
+                                <div class="champ-badge-line1">Tertinggi: -</div>
+                                <div class="champ-badge-line2">(- Kes)</div>
+                            </div>
+                            <div class="chart-legend-dots">
+                                <span><i class="dot dot-m-kb"></i> KB</span>
+                                <span><i class="dot dot-m-kl"></i> KL</span>
+                                <span><i class="dot dot-m-pc"></i> PC</span>
+                            </div>
                         </div>
-                        <div class="chart-legend-dots">
-                            <span><i class="dot dot-m-kb"></i> KB</span>
-                            <span><i class="dot dot-m-kl"></i> KL</span>
-                            <span><i class="dot dot-m-pc"></i> PC</span>
-                        </div>
-                    </div>
-                    <div class="champ-subcard">
-                        <div class="champ-subcard-title" data-i18n="champ_kp_monthly">Saringan KP (Bulanan)</div>
-                        <div class="chart-wrapper">
-                            <canvas id="chart-kp-donut" aria-label="Saringan KP (Bulanan) Donut Chart" role="img"></canvas>
-                            <div class="chart-center" id="chart-kp-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
-                        </div>
-                        <div class="champ-badge" id="badge-kp-top">
-                            <div class="champ-badge-line1">Tertinggi: -</div>
-                            <div class="champ-badge-line2">(- Kes)</div>
-                        </div>
-                        <div class="chart-legend-dots">
-                            <span><i class="dot dot-m-kb"></i> KB</span>
-                            <span><i class="dot dot-m-kl"></i> KL</span>
-                            <span><i class="dot dot-m-pc"></i> PC</span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <!-- Tier 2: Yearly -->
                 <div class="champ-tier">
-                    <div class="champ-tier-label"><span data-i18n="champ_tier_yearly">Tahunan</span> &middot; <span class="champ-tier-year">2026</span></div>
+                    <div class="champ-tier-label"><span data-i18n="champ_tier_yearly">Tahunan</span> &middot; <span
+                            class="champ-tier-year">2026</span></div>
                     <div class="champ-tier-grid">
-                    <div class="champ-subcard">
-                        <div class="champ-subcard-title" data-i18n="champ_kk_yearly">Rujukan KK (Tahunan)</div>
-                        <div class="chart-wrapper">
-                            <canvas id="chart-kk-year-donut" aria-label="Rujukan KK (Tahunan) Donut Chart" role="img"></canvas>
-                            <div class="chart-center" id="chart-kk-year-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
+                        <div class="champ-subcard">
+                            <div class="champ-subcard-title" data-i18n="champ_kk_yearly">Rujukan KK (Tahunan)</div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-kk-year-donut" aria-label="Rujukan KK (Tahunan) Donut Chart"
+                                    role="img"></canvas>
+                                <div class="chart-center" id="chart-kk-year-donut-center"><span
+                                        class="chart-center-num">0</span><span class="chart-center-unit">Kes</span>
+                                </div>
+                            </div>
+                            <div class="champ-badge" id="badge-kk-year-top">
+                                <div class="champ-badge-line1">Tertinggi: -</div>
+                                <div class="champ-badge-line2">(- Kes)</div>
+                            </div>
+                            <div class="chart-legend-dots">
+                                <span><i class="dot dot-y-kb"></i> KB</span>
+                                <span><i class="dot dot-y-kl"></i> KL</span>
+                                <span><i class="dot dot-y-pc"></i> PC</span>
+                            </div>
                         </div>
-                        <div class="champ-badge" id="badge-kk-year-top">
-                            <div class="champ-badge-line1">Tertinggi: -</div>
-                            <div class="champ-badge-line2">(- Kes)</div>
+                        <div class="champ-subcard">
+                            <div class="champ-subcard-title" data-i18n="champ_kp_yearly">Saringan KP (Tahunan)</div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-kp-year-donut" aria-label="Saringan KP (Tahunan) Donut Chart"
+                                    role="img"></canvas>
+                                <div class="chart-center" id="chart-kp-year-donut-center"><span
+                                        class="chart-center-num">0</span><span class="chart-center-unit">Kes</span>
+                                </div>
+                            </div>
+                            <div class="champ-badge" id="badge-kp-year-top">
+                                <div class="champ-badge-line1">Tertinggi: -</div>
+                                <div class="champ-badge-line2">(- Kes)</div>
+                            </div>
+                            <div class="chart-legend-dots">
+                                <span><i class="dot dot-y-kb"></i> KB</span>
+                                <span><i class="dot dot-y-kl"></i> KL</span>
+                                <span><i class="dot dot-y-pc"></i> PC</span>
+                            </div>
                         </div>
-                        <div class="chart-legend-dots">
-                            <span><i class="dot dot-y-kb"></i> KB</span>
-                            <span><i class="dot dot-y-kl"></i> KL</span>
-                            <span><i class="dot dot-y-pc"></i> PC</span>
-                        </div>
-                    </div>
-                    <div class="champ-subcard">
-                        <div class="champ-subcard-title" data-i18n="champ_kp_yearly">Saringan KP (Tahunan)</div>
-                        <div class="chart-wrapper">
-                            <canvas id="chart-kp-year-donut" aria-label="Saringan KP (Tahunan) Donut Chart" role="img"></canvas>
-                            <div class="chart-center" id="chart-kp-year-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
-                        </div>
-                        <div class="champ-badge" id="badge-kp-year-top">
-                            <div class="champ-badge-line1">Tertinggi: -</div>
-                            <div class="champ-badge-line2">(- Kes)</div>
-                        </div>
-                        <div class="chart-legend-dots">
-                            <span><i class="dot dot-y-kb"></i> KB</span>
-                            <span><i class="dot dot-y-kl"></i> KL</span>
-                            <span><i class="dot dot-y-pc"></i> PC</span>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -1908,15 +2112,19 @@
                         </div>
                         <div class="form-group">
                             <label>2. <span data-i18n="label_nama">Nama Penuh Pesakit</span></label>
-                            <input type="text" id="kk-nama" class="form-control" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" required>
+                            <input type="text" id="kk-nama" class="form-control" style="text-transform: uppercase;"
+                                oninput="this.value = this.value.toUpperCase()" required>
                         </div>
                         <div class="form-group">
                             <label>3. <span data-i18n="label_ic">No IC Pesakit (4 Digit Terakhir)</span></label>
-                            <input type="text" id="kk-ic" class="form-control" inputmode="numeric" pattern="\d{4}" maxlength="4" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4);" required>
+                            <input type="text" id="kk-ic" class="form-control" inputmode="numeric" pattern="\d{4}"
+                                maxlength="4" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4);"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>4. <span data-i18n="label_telefon">No. Telefon</span></label>
-                            <input type="tel" id="kk-telefon" class="form-control" inputmode="numeric" maxlength="12" oninput="formatPhoneInput(this)" required>
+                            <input type="tel" id="kk-telefon" class="form-control" inputmode="numeric" maxlength="12"
+                                oninput="formatPhoneInput(this)" required>
                         </div>
                         <div class="form-group">
                             <label>5. <span data-i18n="label_rujukan_kk">Rujukan untuk Saringan BPE</span></label>
@@ -1931,11 +2139,13 @@
                 </div>
 
                 <div class="table-container" style="margin-top: 10px;">
-                    <h3 style="margin: 0 0 12px 4px; font-size: 1.1rem; font-weight: 600;" data-i18n="live_entries">Rekod Bulanan</h3>
+                    <h3 style="margin: 0 0 12px 4px; font-size: 1.1rem; font-weight: 600;" data-i18n="live_entries">
+                        Rekod Bulanan</h3>
                     <div class="month-filter-container">
                         <label style="font-size: 0.9rem; font-weight: 500;" data-i18n="filter_label">Tapis:</label>
                         <input type="month" id="kk-month-filter" class="form-control">
-                        <button class="btn btn-small" onclick="exportExcelKK()" data-i18n="btn_export">Eksport Excel Bulanan (.xlsx)</button>
+                        <button class="btn btn-small" onclick="exportExcelKK()" data-i18n="btn_export">Eksport Excel
+                            Bulanan (.xlsx)</button>
                     </div>
                     <table class="data-table">
                         <thead>
@@ -1975,21 +2185,26 @@
 
                         <div class="form-group">
                             <label>2. <span data-i18n="label_nama">Nama Penuh Pesakit</span></label>
-                            <input type="text" id="f-nama" class="form-control" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" required>
+                            <input type="text" id="f-nama" class="form-control" style="text-transform: uppercase;"
+                                oninput="this.value = this.value.toUpperCase()" required>
                         </div>
 
                         <div class="form-group">
                             <label>3. <span data-i18n="label_ic">No IC Pesakit (4 Digit Terakhir)</span></label>
-                            <input type="text" id="f-ic" class="form-control" inputmode="numeric" pattern="\d{4}" maxlength="4" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4);" required>
+                            <input type="text" id="f-ic" class="form-control" inputmode="numeric" pattern="\d{4}"
+                                maxlength="4" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4);"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label>4. <span data-i18n="label_umur">Umur</span></label>
-                            <input type="text" id="f-umur" class="form-control" pattern="[0-9]*" title="Numbers only" required>
+                            <input type="text" id="f-umur" class="form-control" pattern="[0-9]*" title="Numbers only"
+                                required>
                         </div>
 
                         <div class="form-group">
-                            <label>5. <span data-i18n="label_saringan">Saringan Penyakit Periodontium dan Peri-implan</span></label>
+                            <label>5. <span data-i18n="label_saringan">Saringan Penyakit Periodontium dan
+                                    Peri-implan</span></label>
                             <select id="f-saringan" class="form-control" required>
                                 <option value="" data-i18n="select_please">Sila Pilih...</option>
                                 <optgroup label="Non-Periodontitis">
@@ -2005,7 +2220,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label>6. <span data-i18n="label_pakar_perio">Rujukan Kepada Pakar Periodontik</span></label>
+                            <label>6. <span data-i18n="label_pakar_perio">Rujukan Kepada Pakar
+                                    Periodontik</span></label>
                             <select id="f-pakar-perio" class="form-control" required>
                                 <option value="" data-i18n="select_please">Sila Pilih...</option>
                                 <option value="Ya" data-i18n="opt_ya">Ya</option>
@@ -2019,21 +2235,25 @@
                             <div class="checkbox-group">
                                 <label><input type="checkbox" name="f-pakar-lain" value="UPPKA"> UPPKA</label>
                                 <label><input type="checkbox" name="f-pakar-lain" value="SCD"> SCD</label>
-                                <label><input type="checkbox" name="f-pakar-lain" value="Tiada"> <span data-i18n="opt_tiada">Tiada</span></label>
+                                <label><input type="checkbox" name="f-pakar-lain" value="Tiada"> <span
+                                        data-i18n="opt_tiada">Tiada</span></label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>8. <span data-i18n="label_selesai">Kes Selesai Periodontium</span></label>
                             <div class="radio-group">
-                                <label><input type="radio" name="f-selesai" value="Ya" required> <span data-i18n="opt_ya">Ya</span></label>
-                                <label><input type="radio" name="f-selesai" value="Tidak" required> <span data-i18n="opt_tidak">Tidak</span></label>
+                                <label><input type="radio" name="f-selesai" value="Ya" required> <span
+                                        data-i18n="opt_ya">Ya</span></label>
+                                <label><input type="radio" name="f-selesai" value="Tidak" required> <span
+                                        data-i18n="opt_tidak">Tidak</span></label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>9. <span data-i18n="label_pegawai">Nama Pegawai</span></label>
-                            <input type="text" id="f-pegawai" class="form-control" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" required>
+                            <input type="text" id="f-pegawai" class="form-control" style="text-transform: uppercase;"
+                                oninput="this.value = this.value.toUpperCase()" required>
                         </div>
 
                         <button type="submit" class="btn" data-i18n="btn_submit">Simpan Rekod</button>
@@ -2041,11 +2261,13 @@
                 </div>
 
                 <div class="table-container" style="margin-top: 10px;">
-                    <h3 style="margin: 0 0 12px 4px; font-size: 1.1rem; font-weight: 600;" data-i18n="live_entries">Rekod Bulanan</h3>
+                    <h3 style="margin: 0 0 12px 4px; font-size: 1.1rem; font-weight: 600;" data-i18n="live_entries">
+                        Rekod Bulanan</h3>
                     <div class="month-filter-container">
                         <label style="font-size: 0.9rem; font-weight: 500;" data-i18n="filter_label">Tapis:</label>
                         <input type="month" id="kp-month-filter" class="form-control">
-                        <button class="btn btn-small" onclick="exportExcelKP()" data-i18n="btn_export">Eksport Excel Bulanan (.xlsx)</button>
+                        <button class="btn btn-small" onclick="exportExcelKP()" data-i18n="btn_export">Eksport Excel
+                            Bulanan (.xlsx)</button>
                     </div>
                     <table class="data-table">
                         <thead>
@@ -2072,28 +2294,32 @@
             <div class="doc-card">
                 <div class="doc-title" data-i18n="doc1_title">Garis Panduan Pengurusan Penyakit Periodontium</div>
                 <div class="doc-actions">
-                    <a href="Dokumen/Garis-Panduan-Pengurusan-Penyakit-Periodontium.pdf" download class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
+                    <a href="Dokumen/Garis-Panduan-Pengurusan-Penyakit-Periodontium.pdf" download
+                        class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
                 </div>
             </div>
 
             <div class="doc-card">
                 <div class="doc-title" data-i18n="doc4_title">Panduan Pengurusan Diabetes Mellitus Jenis II</div>
                 <div class="doc-actions">
-                    <a href="Dokumen/CPG-Management-of-Type-II-Diabetes-Mellitus.pdf" target="_blank" rel="noopener" download class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
+                    <a href="Dokumen/CPG-Management-of-Type-II-Diabetes-Mellitus.pdf" target="_blank" rel="noopener"
+                        download class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
                 </div>
             </div>
 
             <div class="doc-card">
                 <div class="doc-title" data-i18n="doc2_title">Slip Rujukan BPE</div>
                 <div class="doc-actions">
-                    <a href="Dokumen/Slip-Rujukan-BPE.pdf" download class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
+                    <a href="Dokumen/Slip-Rujukan-BPE.pdf" download class="btn btn-download"
+                        data-i18n="btn_download">Muat Turun</a>
                 </div>
             </div>
 
             <div class="doc-card">
                 <div class="doc-title" data-i18n="doc3_title">Surat Rujukan Periodontik</div>
                 <div class="doc-actions">
-                    <a href="Dokumen/Surat-Rujukan-Periodontik.pdf" download class="btn btn-download" data-i18n="btn_download">Muat Turun</a>
+                    <a href="Dokumen/Surat-Rujukan-Periodontik.pdf" download class="btn btn-download"
+                        data-i18n="btn_download">Muat Turun</a>
                 </div>
             </div>
         </div>
@@ -2112,7 +2338,7 @@
             <p><strong>Referring Clinic (KK):</strong> ____________________________________________</p>
             <p><strong>Dental Clinic (KP):</strong> _____________________________________________</p>
 
-            
+
             <div class="bpe-grid">
                 <div class="bpe-cell"></div>
                 <div class="bpe-cell"></div>
@@ -2125,7 +2351,7 @@
             <p><strong>Remarks / Care Plan:</strong></p>
             <p>____________________________________________________________________</p>
             <p>____________________________________________________________________</p>
-            
+
             <div class="signature-box">
                 <div>
                     <div class="signature-line"></div>
@@ -2286,7 +2512,7 @@
             if (clinicId) renderKK(clinicId);
         });
 
-        document.getElementById('kk-screening-form').addEventListener('submit', function(e) {
+        document.getElementById('kk-screening-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const form = this;
@@ -2330,7 +2556,7 @@
             };
 
             // Push to Firebase — completion callback always re-enables button
-            db.ref('screenings/kk/' + clinicId).push(formData, function(error) {
+            db.ref('screenings/kk/' + clinicId).push(formData, function (error) {
                 submitBtn.disabled = false;
                 if (error) {
                     alert(t('alert_save_fail') + error.message);
@@ -2340,12 +2566,12 @@
                     document.getElementById('kk-tarikh').value = new Date().toISOString().split('T')[0];
                     submitBtn.textContent = t('btn_saved');
                     submitBtn.style.background = '#28a745';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         submitBtn.textContent = t('btn_submit_label');
                         submitBtn.style.background = 'var(--accent-blue)';
                     }, 2000);
                 }
-            }).catch(function(err) {
+            }).catch(function (err) {
                 alert(t('alert_net_fail') + err.message);
                 submitBtn.textContent = t('btn_submit_label');
                 submitBtn.disabled = false;
@@ -2357,18 +2583,18 @@
             if (!clinicId) return;
             const clinicName = document.getElementById('kk-select').options[document.getElementById('kk-select').selectedIndex].text;
             const filterMonth = document.getElementById('kk-month-filter').value;
-            
+
             let patients = (kkData || []).slice().sort(compareByVisitDate);
-            
+
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
             }
-            
+
             if (patients.length === 0) {
                 alert(t('alert_no_data') + clinicName);
                 return;
             }
-            
+
             const exportData = patients.map((p, index) => ({
                 "No.": index + 1,
                 "Tarikh Lawatan": p.tarikh,
@@ -2377,11 +2603,11 @@
                 "No. Telefon": p.telefon || "",
                 "Rujukan BPE": p.rujukan
             }));
-            
+
             const ws = XLSX.utils.json_to_sheet(exportData);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "KK Data");
-            
+
             const suffix = filterMonth ? filterMonth : new Date().toISOString().split('T')[0];
             XLSX.writeFile(wb, `BPE_KK_Report_${clinicId.toUpperCase()}_${suffix}.xlsx`);
         }
@@ -2462,7 +2688,7 @@
         });
 
         // Form Submit KP
-        document.getElementById('screening-form').addEventListener('submit', function(e) {
+        document.getElementById('screening-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const form = this;
@@ -2487,7 +2713,7 @@
             submitBtn.textContent = t('btn_saving');
 
             const pakarLainCheckboxes = document.querySelectorAll('input[name="f-pakar-lain"]:checked');
-            const pakarLainArr = Array.from(pakarLainCheckboxes).map(function(cb) { return cb.value; });
+            const pakarLainArr = Array.from(pakarLainCheckboxes).map(function (cb) { return cb.value; });
 
             const formData = {
                 clinicId: clinicId,
@@ -2504,7 +2730,7 @@
             };
 
             // Push to Firebase — completion callback always re-enables button
-            db.ref('screenings/kp/' + clinicId).push(formData, function(error) {
+            db.ref('screenings/kp/' + clinicId).push(formData, function (error) {
                 submitBtn.disabled = false;
                 if (error) {
                     alert(t('alert_save_fail') + error.message);
@@ -2514,12 +2740,12 @@
                     document.getElementById('f-tarikh').value = new Date().toISOString().split('T')[0];
                     submitBtn.textContent = t('btn_saved');
                     submitBtn.style.background = '#28a745';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         submitBtn.textContent = t('btn_submit_label');
                         submitBtn.style.background = 'var(--accent-blue)';
                     }, 2000);
                 }
-            }).catch(function(err) {
+            }).catch(function (err) {
                 alert(t('alert_net_fail') + err.message);
                 submitBtn.textContent = t('btn_submit_label');
                 submitBtn.disabled = false;
@@ -2532,18 +2758,18 @@
             if (!clinicId) return;
             const clinicName = document.getElementById('kp-select').options[document.getElementById('kp-select').selectedIndex].text;
             const filterMonth = document.getElementById('kp-month-filter').value;
-            
+
             let patients = (kpData || []).slice().sort(compareByVisitDate);
-            
+
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
             }
-            
+
             if (patients.length === 0) {
                 alert(t('alert_no_data') + clinicName);
                 return;
             }
-            
+
             // Format data for Excel
             const exportData = patients.map((p, index) => ({
                 "No.": index + 1,
@@ -2557,22 +2783,22 @@
                 "Kes Selesai": p.selesai,
                 "Nama Pegawai": p.pegawai
             }));
-            
+
             const ws = XLSX.utils.json_to_sheet(exportData);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "KP Data");
-            
+
             const suffix = filterMonth ? filterMonth : new Date().toISOString().split('T')[0];
             XLSX.writeFile(wb, `BPE_KP_Report_${clinicId.toUpperCase()}_${suffix}.xlsx`);
         }
 
         // --- TABLE ACTIONS — Event-delegated handler for toggle and delete ---
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             // 1. Toggle status buttons (KK Phone Contact & Verification)
             const toggleBtn = e.target.closest('.btn-toggle');
             if (toggleBtn) {
-                const recordKey  = toggleBtn.getAttribute('data-key');
-                const clinicId   = toggleBtn.getAttribute('data-clinic');
+                const recordKey = toggleBtn.getAttribute('data-key');
+                const clinicId = toggleBtn.getAttribute('data-clinic');
                 const toggleType = toggleBtn.getAttribute('data-type'); // 'called' or 'verified'
                 if (!recordKey || !clinicId || !toggleType) return;
 
@@ -2596,7 +2822,7 @@
                 // Persist boolean flag to Firebase Realtime Database
                 db.ref('screenings/kk/' + clinicId + '/' + recordKey).update({
                     [toggleType]: newVal
-                }).catch(function(error) {
+                }).catch(function (error) {
                     console.error('Failed to update status:', error);
                     toggleBtn.classList.toggle('active', isCurrentlyActive);
                     alert(t('alert_status_fail') + error.message);
@@ -2611,9 +2837,9 @@
             // 2. Padam (Delete) Button
             if (!e.target.classList.contains('btn-padam')) return;
 
-            const btn       = e.target;
+            const btn = e.target;
             const recordKey = btn.getAttribute('data-key');
-            const clinicId  = btn.getAttribute('data-clinic');
+            const clinicId = btn.getAttribute('data-clinic');
             const moduleType = btn.getAttribute('data-module'); // 'kk' or 'kp'
 
             if (!recordKey || !clinicId || !moduleType) return;
@@ -2622,10 +2848,10 @@
 
             db.ref('screenings/' + moduleType + '/' + clinicId + '/' + recordKey)
                 .remove()
-                .then(function() {
+                .then(function () {
                     alert(t('alert_del_ok'));
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     alert(t('alert_del_fail') + error.message);
                 });
         });
@@ -2676,15 +2902,15 @@
             const saveBtn = document.getElementById('edit-save-btn');
             saveBtn.disabled = true;
             db.ref('screenings/' + moduleType + '/' + clinicId + '/' + key).update(payload)
-                .then(function() { closeEditModal(); })
-                .catch(function(err) { alert(t('alert_edit_fail') + err.message); })
-                .then(function() { saveBtn.disabled = false; });
+                .then(function () { closeEditModal(); })
+                .catch(function (err) { alert(t('alert_edit_fail') + err.message); })
+                .then(function () { saveBtn.disabled = false; });
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('edit-ic').addEventListener('input', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('edit-ic').addEventListener('input', function () {
                 this.value = this.value.replace(/\D/g, '').slice(0, 4);
             });
-            document.getElementById('edit-modal').addEventListener('click', function(e) {
+            document.getElementById('edit-modal').addEventListener('click', function (e) {
                 if (e.target === this) closeEditModal();
             });
         });
@@ -2930,8 +3156,8 @@
                             external: customDonutTooltip,
                             displayColors: false,
                             callbacks: {
-                                title: function() { return ''; },
-                                label: function(context) {
+                                title: function () { return ''; },
+                                label: function (context) {
                                     const clinic = context.label || '';
                                     const val = context.parsed || 0;
                                     return `${clinic} (${val})`;
@@ -2993,9 +3219,9 @@
             renderTopBadge('badge-kk-year-top', latestDashboardStats.kkYearCounts, kkNames);
             renderTopBadge('badge-kp-year-top', latestDashboardStats.kpYearCounts, kpNames);
             [['chart-kk-donut', latestDashboardStats.kkCounts],
-             ['chart-kp-donut', latestDashboardStats.kpCounts],
-             ['chart-kk-year-donut', latestDashboardStats.kkYearCounts],
-             ['chart-kp-year-donut', latestDashboardStats.kpYearCounts]].forEach(([id, counts]) => {
+            ['chart-kp-donut', latestDashboardStats.kpCounts],
+            ['chart-kk-year-donut', latestDashboardStats.kkYearCounts],
+            ['chart-kp-year-donut', latestDashboardStats.kpYearCounts]].forEach(([id, counts]) => {
                 const el = document.getElementById(id + '-center');
                 if (!el) return;
                 const total = Object.values(counts).reduce((a, b) => a + b, 0);
@@ -3184,208 +3410,208 @@
         const i18n = {
             bm: {
                 // Navigation
-                nav_kk:           'Klinik Kesihatan',
-                nav_kp:           'Klinik Pergigian',
-                nav_doc:          'Surat Rujukan',
+                nav_kk: 'Klinik Kesihatan',
+                nav_kp: 'Klinik Pergigian',
+                nav_doc: 'Surat Rujukan',
                 // Section headers
-                kk_title:         'Klinik Kesihatan (Perubatan)',
-                kp_title:         'Klinik Pergigian (Pergigian)',
-                doc_title:        'Surat Rujukan',
+                kk_title: 'Klinik Kesihatan (Perubatan)',
+                kp_title: 'Klinik Pergigian (Pergigian)',
+                doc_title: 'Surat Rujukan',
                 // Monthly Dashboard
-                dash_section_title:   'Prestasi Bulanan',
+                dash_section_title: 'Prestasi Bulanan',
                 dash_select_month_label: 'Bulan & Tahun:',
                 dash_total_cases_label: 'Jumlah Kes',
-                dash_month_sub:       'Bulan Ini',
-                dash_kk_ref_title:    'Kes Dirujuk KK',
-                dash_kp_scr_title:    'Kes Disaring KP',
-                champ_master_title:   'Kejuaraan BPE',
-                champ_tier_monthly:   'Bulanan',
-                champ_tier_yearly:    'Tahunan',
-                champ_kk_monthly:     'Rujukan KK (Bulanan)',
-                champ_kp_monthly:     'Saringan KP (Bulanan)',
-                champ_kk_yearly:      'Rujukan KK (Tahunan)',
-                champ_kp_yearly:      'Saringan KP (Tahunan)',
-                dash_kk_breakdown:    'Pecahan KK',
-                dash_kp_breakdown:    'Pecahan KP',
-                dash_kk_tag:          'Semua 3 KK',
-                dash_kp_tag:          'Semua 3 KP',
-                dash_no_data:         'Tiada data bulan ini',
-                dash_top_prefix:      'Tertinggi: ',
-                dash_case_unit:       'Kes',
-                dash_cases_suffix:    ' kes',
+                dash_month_sub: 'Bulan Ini',
+                dash_kk_ref_title: 'Kes Dirujuk KK',
+                dash_kp_scr_title: 'Kes Disaring KP',
+                champ_master_title: 'Kejuaraan BPE',
+                champ_tier_monthly: 'Bulanan',
+                champ_tier_yearly: 'Tahunan',
+                champ_kk_monthly: 'Rujukan KK',
+                champ_kp_monthly: 'Saringan KP',
+                champ_kk_yearly: 'Rujukan KK',
+                champ_kp_yearly: 'Saringan KP',
+                dash_kk_breakdown: 'Pecahan KK',
+                dash_kp_breakdown: 'Pecahan KP',
+                dash_kk_tag: 'Semua 3 KK',
+                dash_kp_tag: 'Semua 3 KP',
+                dash_no_data: 'Tiada data bulan ini',
+                dash_top_prefix: 'Tertinggi: ',
+                dash_case_unit: 'Kes',
+                dash_cases_suffix: ' kes',
                 // Clinic select placeholder
-                select_clinic:    '-- Sila Pilih Klinik --',
+                select_clinic: '-- Sila Pilih Klinik --',
                 // Form labels
-                label_tarikh_kk:  'Tarikh Lawatan',
-                label_tarikh:     'Tarikh Kedatangan',
-                label_nama:       'Nama Penuh Pesakit',
-                label_ic:         'No IC Pesakit (4 Digit Terakhir)',
-                label_telefon:    'No. Telefon',
+                label_tarikh_kk: 'Tarikh Lawatan',
+                label_tarikh: 'Tarikh Kedatangan',
+                label_nama: 'Nama Penuh Pesakit',
+                label_ic: 'No IC Pesakit (4 Digit Terakhir)',
+                label_telefon: 'No. Telefon',
                 label_rujukan_kk: 'Rujukan untuk Saringan BPE',
-                label_pegawai:    'Nama Pegawai',
-                label_rn:         'No. RN',
-                label_umur:       'Umur',
-                label_saringan:   'Saringan Penyakit Periodontium dan Peri-implan',
-                label_pakar_perio:'Rujukan Kepada Pakar Periodontik',
+                label_pegawai: 'Nama Pegawai',
+                label_rn: 'No. RN',
+                label_umur: 'Umur',
+                label_saringan: 'Saringan Penyakit Periodontium dan Peri-implan',
+                label_pakar_perio: 'Rujukan Kepada Pakar Periodontik',
                 label_pakar_lain: 'Rujukan Kepada Pakar Lain',
-                label_selesai:    'Kes Selesai Periodontium',
+                label_selesai: 'Kes Selesai Periodontium',
                 // Select options
-                select_please:    'Sila Pilih...',
-                opt_dirujuk:      'Dirujuk',
-                opt_enggan:       'Enggan',
-                opt_ya:           'Ya',
-                opt_tidak:        'Tidak',
-                opt_tiada:        'Tiada',
+                select_please: 'Sila Pilih...',
+                opt_dirujuk: 'Dirujuk',
+                opt_enggan: 'Enggan',
+                opt_ya: 'Ya',
+                opt_tidak: 'Tidak',
+                opt_tiada: 'Tiada',
                 // Buttons
-                btn_submit:       'Simpan Rekod',
-                btn_export:       'Eksport Excel Bulanan (.xlsx)',
-                btn_download:     'Muat Turun',
+                btn_submit: 'Simpan Rekod',
+                btn_export: 'Eksport Excel Bulanan (.xlsx)',
+                btn_download: 'Muat Turun',
                 // Table headings
-                live_entries:     'Rekod Bulanan',
-                filter_label:     'Tapis:',
-                th_date:          'Tarikh',
-                th_name:          'Nama Pesakit',
-                th_ic:            'No. IC',
-                th_status:        'Status',
-                th_bpe:           'BPE',
-                th_completed:     'Selesai',
-                th_action:        'Tindakan',
+                live_entries: 'Rekod Bulanan',
+                filter_label: 'Tapis:',
+                th_date: 'Tarikh',
+                th_name: 'Nama Pesakit',
+                th_ic: 'No. IC',
+                th_status: 'Status',
+                th_bpe: 'BPE',
+                th_completed: 'Selesai',
+                th_action: 'Tindakan',
                 // Document titles
-                doc1_title:       'Garis Panduan Pengurusan Penyakit Periodontium',
-                doc2_title:       'Slip Rujukan BPE',
-                doc3_title:       'Surat Rujukan Periodontik',
-                doc4_title:       'Panduan Pengurusan Diabetes Mellitus Jenis II',
+                doc1_title: 'Garis Panduan Pengurusan Penyakit Periodontium',
+                doc2_title: 'Slip Rujukan BPE',
+                doc3_title: 'Surat Rujukan Periodontik',
+                doc4_title: 'Panduan Pengurusan Diabetes Mellitus Jenis II',
                 // Runtime strings (used in JS alerts / buttons)
-                btn_saving:       'Menyimpan...',
-                btn_saved:        '✓ Berjaya Disimpan',
+                btn_saving: 'Menyimpan...',
+                btn_saved: '✓ Berjaya Disimpan',
                 btn_submit_label: 'Simpan Rekod',
-                btn_padam:        'Padam',
-                btn_edit:         'Edit',
-                edit_title:       'Kemas Kini Rekod',
-                edit_name:        'Nama Pesakit',
-                edit_ic:          'No. IC Pesakit (4 Digit Terakhir)',
-                edit_status:      'Status / Skor BPE',
-                edit_save:        'Simpan',
-                edit_cancel:      'Batal',
-                alert_edit_fail:  'Gagal mengemas kini rekod: ',
+                btn_padam: 'Padam',
+                btn_edit: 'Edit',
+                edit_title: 'Kemas Kini Rekod',
+                edit_name: 'Nama Pesakit',
+                edit_ic: 'No. IC Pesakit (4 Digit Terakhir)',
+                edit_status: 'Status / Skor BPE',
+                edit_save: 'Simpan',
+                edit_cancel: 'Batal',
+                alert_edit_fail: 'Gagal mengemas kini rekod: ',
                 alert_no_clinic_kk: 'Sila pilih Klinik Kesihatan terlebih dahulu!',
                 alert_no_clinic_kp: 'Sila pilih Klinik Pergigian terlebih dahulu!',
                 alert_invalid_ic: 'Sila masukkan tepat 4 digit No. IC pesakit!',
                 alert_invalid_phone: 'Sila masukkan nombor telefon yang sah!',
-                alert_save_ok:    'Rekod berjaya disimpan!',
-                alert_save_fail:  'Gagal menyimpan rekod: ',
-                alert_net_fail:   'Ralat Rangkaian/Database: ',
-                alert_del_confirm:'Adakah anda pasti untuk memadam rekod ini?',
-                alert_del_ok:     'Rekod berjaya dipadam!',
-                alert_del_fail:   'Gagal memadam rekod: ',
-                alert_status_fail:'Gagal mengemas kini status: ',
-                status_called_true:   'Status: Sudah Dihubungi',
-                status_called_false:  'Status: Belum Dihubungi',
+                alert_save_ok: 'Rekod berjaya disimpan!',
+                alert_save_fail: 'Gagal menyimpan rekod: ',
+                alert_net_fail: 'Ralat Rangkaian/Database: ',
+                alert_del_confirm: 'Adakah anda pasti untuk memadam rekod ini?',
+                alert_del_ok: 'Rekod berjaya dipadam!',
+                alert_del_fail: 'Gagal memadam rekod: ',
+                alert_status_fail: 'Gagal mengemas kini status: ',
+                status_called_true: 'Status: Sudah Dihubungi',
+                status_called_false: 'Status: Belum Dihubungi',
                 status_verified_true: 'Status: Selesai / Disahkan',
-                status_verified_false:'Status: Belum Selesai',
-                alert_no_data:    'Tiada data pesakit untuk bulan yang dipilih bagi ',
-                empty_table:      'Tiada entri dijumpai untuk bulan ini',
+                status_verified_false: 'Status: Belum Selesai',
+                alert_no_data: 'Tiada data pesakit untuk bulan yang dipilih bagi ',
+                empty_table: 'Tiada entri dijumpai untuk bulan ini',
                 // Lang button label (shown when currently in BM, clicking will go to EN)
-                lang_btn:         '🌐 ENG'
+                lang_btn: '🌐 ENG'
             },
             en: {
                 // Navigation
-                nav_kk:           'Health Clinic',
-                nav_kp:           'Dental Clinic',
-                nav_doc:          'Referral Letter',
+                nav_kk: 'Health Clinic',
+                nav_kp: 'Dental Clinic',
+                nav_doc: 'Referral Letter',
                 // Section headers
-                kk_title:         'Health Clinic (Medical)',
-                kp_title:         'Dental Clinic (Dental)',
-                doc_title:        'Referral Letter',
+                kk_title: 'Health Clinic (Medical)',
+                kp_title: 'Dental Clinic (Dental)',
+                doc_title: 'Referral Letter',
                 // Monthly Dashboard
-                dash_section_title:   'Monthly Performance',
+                dash_section_title: 'Monthly Performance',
                 dash_select_month_label: 'Month & Year:',
                 dash_total_cases_label: 'Total Case',
-                dash_month_sub:       'This Month',
-                dash_kk_ref_title:    'Referred from KK',
-                dash_kp_scr_title:    'Screened at KP',
-                champ_master_title:   'BPE Championship',
-                champ_tier_monthly:   'Monthly',
-                champ_tier_yearly:    'Yearly',
-                champ_kk_monthly:     'KK Referrals (Monthly)',
-                champ_kp_monthly:     'KP Screenings (Monthly)',
-                champ_kk_yearly:      'KK Referrals (Yearly)',
-                champ_kp_yearly:      'KP Screenings (Yearly)',
-                dash_kk_breakdown:    'KK Breakdown',
-                dash_kp_breakdown:    'KP Breakdown',
-                dash_kk_tag:          'All 3 KK Clinics',
-                dash_kp_tag:          'All 3 KP Clinics',
-                dash_no_data:         'No data this month',
-                dash_top_prefix:      'Top: ',
-                dash_case_unit:       'Cases',
-                dash_cases_suffix:    ' cases',
+                dash_month_sub: 'This Month',
+                dash_kk_ref_title: 'Referred from KK',
+                dash_kp_scr_title: 'Screened at KP',
+                champ_master_title: 'BPE Championship',
+                champ_tier_monthly: 'Monthly',
+                champ_tier_yearly: 'Yearly',
+                champ_kk_monthly: 'KK Referrals',
+                champ_kp_monthly: 'KP Screenings',
+                champ_kk_yearly: 'KK Referrals',
+                champ_kp_yearly: 'KP Screenings',
+                dash_kk_breakdown: 'KK Breakdown',
+                dash_kp_breakdown: 'KP Breakdown',
+                dash_kk_tag: 'All 3 KK Clinics',
+                dash_kp_tag: 'All 3 KP Clinics',
+                dash_no_data: 'No data this month',
+                dash_top_prefix: 'Top: ',
+                dash_case_unit: 'Cases',
+                dash_cases_suffix: ' cases',
                 // Clinic select placeholder
-                select_clinic:    '-- Select a Clinic --',
-                label_tarikh_kk:  'Date of Visit',
-                label_tarikh:     'Date of Visit',
-                label_nama:       'Patient Full Name',
-                label_ic:         'Patient IC No (Last 4 digits)',
-                label_telefon:    'Phone No.',
+                select_clinic: '-- Select a Clinic --',
+                label_tarikh_kk: 'Date of Visit',
+                label_tarikh: 'Date of Visit',
+                label_nama: 'Patient Full Name',
+                label_ic: 'Patient IC No (Last 4 digits)',
+                label_telefon: 'Phone No.',
                 label_rujukan_kk: 'Referral for BPE Screening',
-                label_pegawai:    'Officer Name',
-                label_rn:         'RN No.',
-                label_umur:       'Age',
-                label_saringan:   'Periodontium & Peri-implant Screening',
-                label_pakar_perio:'Referral to Periodontic Specialist',
+                label_pegawai: 'Officer Name',
+                label_rn: 'RN No.',
+                label_umur: 'Age',
+                label_saringan: 'Periodontium & Peri-implant Screening',
+                label_pakar_perio: 'Referral to Periodontic Specialist',
                 label_pakar_lain: 'Referral to Other Specialist',
-                label_selesai:    'Periodontium Case Completed',
-                select_please:    'Please Select...',
-                opt_dirujuk:      'Referred',
-                opt_enggan:       'Declined',
-                opt_ya:           'Yes',
-                opt_tidak:        'No',
-                opt_tiada:        'None',
-                btn_submit:       'Submit Record',
-                btn_export:       'Export Monthly Excel (.xlsx)',
-                btn_download:     'Download',
-                live_entries:     'Monthly Record',
-                filter_label:     'Filter:',
-                th_date:          'Date',
-                th_name:          'Patient Name',
-                th_ic:            'IC',
-                th_status:        'Status',
-                th_bpe:           'BPE',
-                th_completed:     'Completed',
-                th_action:        'Action',
-                doc1_title:       'Periodontal Disease Management Guidelines',
-                doc2_title:       'BPE Referral Slip',
-                doc3_title:       'Periodontic Referral Letter',
-                doc4_title:       'Management of Type II Diabetes Mellitus',
-                btn_saving:       'Saving...',
-                btn_saved:        '✓ Saved Successfully',
+                label_selesai: 'Periodontium Case Completed',
+                select_please: 'Please Select...',
+                opt_dirujuk: 'Referred',
+                opt_enggan: 'Declined',
+                opt_ya: 'Yes',
+                opt_tidak: 'No',
+                opt_tiada: 'None',
+                btn_submit: 'Submit Record',
+                btn_export: 'Export Monthly Excel (.xlsx)',
+                btn_download: 'Download',
+                live_entries: 'Monthly Record',
+                filter_label: 'Filter:',
+                th_date: 'Date',
+                th_name: 'Patient Name',
+                th_ic: 'IC',
+                th_status: 'Status',
+                th_bpe: 'BPE',
+                th_completed: 'Completed',
+                th_action: 'Action',
+                doc1_title: 'Periodontal Disease Management Guidelines',
+                doc2_title: 'BPE Referral Slip',
+                doc3_title: 'Periodontic Referral Letter',
+                doc4_title: 'Management of Type II Diabetes Mellitus',
+                btn_saving: 'Saving...',
+                btn_saved: '✓ Saved Successfully',
                 btn_submit_label: 'Submit Record',
-                btn_padam:        'Delete',
-                btn_edit:         'Edit',
-                edit_title:       'Edit Record',
-                edit_name:        'Patient Name',
-                edit_ic:          'Patient IC No. (Last 4 Digits)',
-                edit_status:      'Status / BPE Score',
-                edit_save:        'Save',
-                edit_cancel:      'Cancel',
-                alert_edit_fail:  'Failed to update record: ',
+                btn_padam: 'Delete',
+                btn_edit: 'Edit',
+                edit_title: 'Edit Record',
+                edit_name: 'Patient Name',
+                edit_ic: 'Patient IC No. (Last 4 Digits)',
+                edit_status: 'Status / BPE Score',
+                edit_save: 'Save',
+                edit_cancel: 'Cancel',
+                alert_edit_fail: 'Failed to update record: ',
                 alert_no_clinic_kk: 'Please select a Health Clinic first!',
                 alert_no_clinic_kp: 'Please select a Dental Clinic first!',
                 alert_invalid_ic: 'Please enter exactly 4 digits for Patient IC No!',
                 alert_invalid_phone: 'Please enter a valid phone number!',
-                alert_save_ok:    'Record saved successfully!',
-                alert_save_fail:  'Failed to save record: ',
-                alert_net_fail:   'Network/Database Error: ',
-                alert_del_confirm:'Are you sure you want to delete this record?',
-                alert_del_ok:     'Record deleted successfully!',
-                alert_del_fail:   'Failed to delete record: ',
-                alert_status_fail:'Failed to update status: ',
-                status_called_true:   'Status: Contacted',
-                status_called_false:  'Status: Not Contacted',
+                alert_save_ok: 'Record saved successfully!',
+                alert_save_fail: 'Failed to save record: ',
+                alert_net_fail: 'Network/Database Error: ',
+                alert_del_confirm: 'Are you sure you want to delete this record?',
+                alert_del_ok: 'Record deleted successfully!',
+                alert_del_fail: 'Failed to delete record: ',
+                alert_status_fail: 'Failed to update status: ',
+                status_called_true: 'Status: Contacted',
+                status_called_false: 'Status: Not Contacted',
                 status_verified_true: 'Status: Completed / Verified',
-                status_verified_false:'Status: Pending Completion',
-                alert_no_data:    'No patient data for selected month at ',
-                empty_table:      'No entries found for this month',
-                lang_btn:         '🌐 BM'
+                status_verified_false: 'Status: Pending Completion',
+                alert_no_data: 'No patient data for selected month at ',
+                empty_table: 'No entries found for this month',
+                lang_btn: '🌐 BM'
             }
         };
 
@@ -3400,14 +3626,14 @@
         function applyLang() {
             const dict = i18n[currentLang];
             // Update all [data-i18n] elements
-            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
                 const key = el.getAttribute('data-i18n');
                 if (dict[key] !== undefined) {
                     el.textContent = dict[key];
                 }
             });
             // Update all [data-i18n-placeholder] elements
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (dict[key] !== undefined) {
                     el.placeholder = dict[key];
@@ -3452,20 +3678,26 @@
             if (kpClinic) listenToKP(kpClinic);
         });
     </script>
-<div id="edit-modal" class="edit-modal-overlay" role="dialog" aria-modal="true">
-    <div class="edit-modal">
-        <h3 data-i18n="edit_title">Kemas Kini Rekod</h3>
-        <div class="form-group"><label data-i18n="edit_name">Nama Pesakit</label>
-            <input type="text" id="edit-nama" class="form-control" maxlength="120"></div>
-        <div class="form-group"><label data-i18n="edit_ic">No. IC Pesakit (4 Digit Terakhir)</label>
-            <input type="text" id="edit-ic" class="form-control" inputmode="numeric" maxlength="4"></div>
-        <div class="form-group"><label data-i18n="edit_status">Status / Skor BPE</label>
-            <select id="edit-status" class="form-control"></select></div>
-        <div class="edit-modal-actions">
-            <button type="button" class="btn btn-small" style="background:#8e8e93;" onclick="closeEditModal()" data-i18n="edit_cancel">Batal</button>
-            <button type="button" class="btn btn-small" id="edit-save-btn" onclick="saveEditModal()" data-i18n="edit_save">Simpan</button>
+    <div id="edit-modal" class="edit-modal-overlay" role="dialog" aria-modal="true">
+        <div class="edit-modal">
+            <h3 data-i18n="edit_title">Kemas Kini Rekod</h3>
+            <div class="form-group"><label data-i18n="edit_name">Nama Pesakit</label>
+                <input type="text" id="edit-nama" class="form-control" maxlength="120">
+            </div>
+            <div class="form-group"><label data-i18n="edit_ic">No. IC Pesakit (4 Digit Terakhir)</label>
+                <input type="text" id="edit-ic" class="form-control" inputmode="numeric" maxlength="4">
+            </div>
+            <div class="form-group"><label data-i18n="edit_status">Status / Skor BPE</label>
+                <select id="edit-status" class="form-control"></select>
+            </div>
+            <div class="edit-modal-actions">
+                <button type="button" class="btn btn-small" style="background:#8e8e93;" onclick="closeEditModal()"
+                    data-i18n="edit_cancel">Batal</button>
+                <button type="button" class="btn btn-small" id="edit-save-btn" onclick="saveEditModal()"
+                    data-i18n="edit_save">Simpan</button>
+            </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>
