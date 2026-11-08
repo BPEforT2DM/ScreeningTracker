@@ -1457,6 +1457,95 @@
             display: none;
         }
 
+        /* Monthly = pastel blue panel, Yearly = pastel rose panel */
+        .champ-tier:nth-child(1) {
+            background: linear-gradient(160deg, rgba(224, 242, 254, 0.55), rgba(255, 255, 255, 0.3));
+            border: 1px solid rgba(186, 230, 253, 0.5);
+            box-shadow: 0 6px 24px rgba(186, 230, 253, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+        .champ-tier:nth-child(2) {
+            background: linear-gradient(160deg, rgba(252, 231, 243, 0.6), rgba(255, 255, 255, 0.3));
+            border: 1px solid rgba(251, 207, 232, 0.5);
+            box-shadow: 0 6px 24px rgba(251, 207, 232, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+        .champ-tier:nth-child(1) .champ-tier-label {
+            color: #0369a1;
+            background: rgba(186, 230, 253, 0.55);
+            border-radius: 10px;
+            padding: 4px 8px;
+        }
+        .champ-tier:nth-child(2) .champ-tier-label {
+            color: #be185d;
+            background: rgba(251, 207, 232, 0.6);
+            border-radius: 10px;
+            padding: 4px 8px;
+        }
+        .chart-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            line-height: 1.05;
+        }
+        .chart-center-num { font-size: 1.15rem; font-weight: 800; color: #0f172a; }
+        .chart-center-unit { font-size: 0.68rem; font-weight: 500; color: #475569; }
+
+        /* Desktop two-column dashboard: KK/KP stacked left, Championship right */
+        @media (min-width: 769px) {
+            .dashboard-container {
+                grid-template-columns: minmax(0, 31fr) minmax(0, 69fr);
+            }
+            .dashboard-container > .dash-card:not(.champ-card-group) {
+                grid-column: 1;
+                padding: 1rem 1.25rem;
+            }
+            .dashboard-container > .dash-card:nth-child(2):not(.champ-card-group) { grid-row: 2; }
+            .dashboard-container > .dash-card:nth-child(3):not(.champ-card-group) { grid-row: 3; }
+            .dashboard-container > .dash-card:not(.champ-card-group) .dash-total-box {
+                margin: 2px 0 4px 0;
+            }
+            .dashboard-container > .dash-card:not(.champ-card-group) .dash-metric {
+                font-size: 2rem;
+                margin: 0;
+            }
+            .dashboard-container > .dash-card:not(.champ-card-group) .dash-subgrid {
+                flex: 1;
+                margin: 8px 0 0 0;
+            }
+            .dashboard-container > .dash-card:not(.champ-card-group) .dash-subcard {
+                flex: 1;
+                padding: 5px 12px;
+            }
+            .dashboard-container > .dash-card.champ-card-group {
+                grid-column: 2;
+                grid-row: 2 / span 2;
+                justify-content: flex-start;
+                padding: 1rem 1.25rem 1.25rem 1.25rem;
+            }
+            .champ-subgrid {
+                flex: 1;
+                gap: 1.25rem;
+            }
+            .champ-tier {
+                padding: 12px 14px 14px 14px;
+                gap: 10px;
+            }
+            .champ-tier-grid {
+                gap: 0.9rem;
+            }
+            .champ-subcard {
+                padding: 12px 10px 10px 10px;
+            }
+            .chart-wrapper {
+                width: 120px;
+                height: 120px;
+                margin: 4px auto;
+            }
+        }
+
         @media print {
             body * {
                 visibility: hidden;
@@ -1720,6 +1809,7 @@
                         <div class="champ-subcard-title" data-i18n="champ_kk_monthly">Rujukan KK (Bulanan)</div>
                         <div class="chart-wrapper">
                             <canvas id="chart-kk-donut" aria-label="Rujukan KK (Bulanan) Donut Chart" role="img"></canvas>
+                            <div class="chart-center" id="chart-kk-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
                         </div>
                         <div class="champ-badge" id="badge-kk-top">
                             <div class="champ-badge-line1">Tertinggi: -</div>
@@ -1735,6 +1825,7 @@
                         <div class="champ-subcard-title" data-i18n="champ_kp_monthly">Saringan KP (Bulanan)</div>
                         <div class="chart-wrapper">
                             <canvas id="chart-kp-donut" aria-label="Saringan KP (Bulanan) Donut Chart" role="img"></canvas>
+                            <div class="chart-center" id="chart-kp-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
                         </div>
                         <div class="champ-badge" id="badge-kp-top">
                             <div class="champ-badge-line1">Tertinggi: -</div>
@@ -1756,6 +1847,7 @@
                         <div class="champ-subcard-title" data-i18n="champ_kk_yearly">Rujukan KK (Tahunan)</div>
                         <div class="chart-wrapper">
                             <canvas id="chart-kk-year-donut" aria-label="Rujukan KK (Tahunan) Donut Chart" role="img"></canvas>
+                            <div class="chart-center" id="chart-kk-year-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
                         </div>
                         <div class="champ-badge" id="badge-kk-year-top">
                             <div class="champ-badge-line1">Tertinggi: -</div>
@@ -1771,6 +1863,7 @@
                         <div class="champ-subcard-title" data-i18n="champ_kp_yearly">Saringan KP (Tahunan)</div>
                         <div class="chart-wrapper">
                             <canvas id="chart-kp-year-donut" aria-label="Saringan KP (Tahunan) Donut Chart" role="img"></canvas>
+                            <div class="chart-center" id="chart-kp-year-donut-center"><span class="chart-center-num">0</span><span class="chart-center-unit">Kes</span></div>
                         </div>
                         <div class="champ-badge" id="badge-kp-year-top">
                             <div class="champ-badge-line1">Tertinggi: -</div>
@@ -2890,9 +2983,20 @@
             renderTopBadge('badge-kp-top', latestDashboardStats.kpCounts, kpNames);
             renderTopBadge('badge-kk-year-top', latestDashboardStats.kkYearCounts, kkNames);
             renderTopBadge('badge-kp-year-top', latestDashboardStats.kpYearCounts, kpNames);
+            [['chart-kk-donut', latestDashboardStats.kkCounts],
+             ['chart-kp-donut', latestDashboardStats.kpCounts],
+             ['chart-kk-year-donut', latestDashboardStats.kkYearCounts],
+             ['chart-kp-year-donut', latestDashboardStats.kpYearCounts]].forEach(([id, counts]) => {
+                const el = document.getElementById(id + '-center');
+                if (!el) return;
+                const total = Object.values(counts).reduce((a, b) => a + b, 0);
+                el.querySelector('.chart-center-num').textContent = total;
+                el.querySelector('.chart-center-unit').textContent =
+                    (currentLang === 'en' && total === 1) ? 'Case' : t('dash_case_unit');
+            });
         }
 
-        function updateDonut(chart, counts, names) {
+        function updateDonut(chart, counts, names, colors) {
             if (!chart) return;
             const total = names.reduce((a, n) => a + (counts[n] || 0), 0);
             if (total === 0) {
@@ -2903,7 +3007,7 @@
             } else {
                 chart.data.labels = names;
                 chart.data.datasets[0].data = names.map(n => counts[n] || 0);
-                chart.data.datasets[0].backgroundColor = ['#ffeaa7', '#ff7675', '#55efc4'];
+                chart.data.datasets[0].backgroundColor = colors;
                 chart.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.95)';
             }
             chart.update();
@@ -3022,10 +3126,13 @@
 
             const kkNames = Object.keys(kkCounts);
             const kpNames = Object.keys(kpCounts);
-            updateDonut(chartKK, kkCounts, kkNames);
-            updateDonut(chartKP, kpCounts, kpNames);
-            updateDonut(chartKKY, kkYearCounts, kkNames);
-            updateDonut(chartKPY, kpYearCounts, kpNames);
+            const COOL = ['#0284c7', '#38bdf8', '#bae6fd'];
+            const WARM_KK = ['#a855f7', '#c084fc', '#e9d5ff'];
+            const WARM_KP = ['#f43f5e', '#fb7185', '#fecdd3'];
+            updateDonut(chartKK, kkCounts, kkNames, COOL);
+            updateDonut(chartKP, kpCounts, kpNames, COOL);
+            updateDonut(chartKKY, kkYearCounts, kkNames, WARM_KK);
+            updateDonut(chartKPY, kpYearCounts, kpNames, WARM_KP);
 
             // Render competitive badges and active month labels
             renderDashboardBadges();
