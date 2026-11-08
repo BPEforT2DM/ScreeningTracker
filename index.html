@@ -909,6 +909,44 @@
             transform: translateY(-1px);
         }
 
+        /* Edit / Kemas Kini Button */
+        .btn-edit {
+            background: rgba(0, 113, 227, 0.12);
+            color: #005bb5;
+            border: 1px solid rgba(0, 113, 227, 0.35);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-edit:hover {
+            background: rgba(0, 113, 227, 0.25);
+            border-color: rgba(0, 113, 227, 0.6);
+            transform: translateY(-1px);
+        }
+        .edit-modal-overlay {
+            position: fixed; inset: 0; z-index: 10000;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            padding: 16px;
+        }
+        .edit-modal-overlay.open { display: flex; }
+        .edit-modal {
+            width: 100%; max-width: 420px;
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 22px; padding: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+        .edit-modal h3 { margin: 0 0 16px; font-size: 1.15rem; }
+        .edit-modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
         /* Action Buttons Group for Table Actions */
         .action-btn-group {
             display: inline-flex;
@@ -1347,6 +1385,11 @@
             .badge {
                 padding: 3px 6px;
                 font-size: 0.72rem;
+            }
+            .btn-edit {
+                padding: 4px 8px;
+                font-size: 0.72rem;
+                border-radius: 8px;
             }
             .btn-padam {
                 padding: 4px 8px;
@@ -1945,6 +1988,14 @@
         let kkData = [];
         let kpData = [];
 
+        // Chronological sort: earliest Tarikh first; ties broken by entry time
+        function compareByVisitDate(a, b) {
+            const da = a.tarikh || '', dbb = b.tarikh || '';
+            if (da < dbb) return -1;
+            if (da > dbb) return 1;
+            return (a.createdAt || 0) - (b.createdAt || 0);
+        }
+
         // --- MOBILE DISPLAY HELPERS ---
         // These ONLY affect visual display; raw data remains untouched for exports.
         function formatMobileName(fullName) {
@@ -1983,7 +2034,7 @@
                     firebaseId: key,
                     ...dataObj[key]
                 }));
-                kkData.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                kkData.sort(compareByVisitDate);
                 renderKK(clinicId);
             });
         }
@@ -1993,7 +2044,7 @@
             tbody.innerHTML = '';
 
             const filterMonth = document.getElementById('kk-month-filter').value;
-            let patients = kkData || [];
+            let patients = (kkData || []).slice().sort(compareByVisitDate);
 
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
@@ -2031,6 +2082,7 @@
                             <button type="button" class="btn-toggle btn-toggle-verify ${isVerified ? 'active' : ''}" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-type="verified" title="${verifyTitle}" aria-label="${verifyTitle}">
                                 <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </button>
+                            <button type="button" class="btn-edit" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kk">${t('btn_edit')}</button>
                             <button class="btn-padam" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kk">${t('btn_padam')}</button>
                         </div>
                     </td>
@@ -2127,7 +2179,7 @@
             const clinicName = document.getElementById('kk-select').options[document.getElementById('kk-select').selectedIndex].text;
             const filterMonth = document.getElementById('kk-month-filter').value;
             
-            let patients = kkData || [];
+            let patients = (kkData || []).slice().sort(compareByVisitDate);
             
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
@@ -2169,7 +2221,7 @@
                     firebaseId: key,
                     ...dataObj[key]
                 }));
-                kpData.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                kpData.sort(compareByVisitDate);
                 renderKP(clinicId);
             });
         }
@@ -2179,7 +2231,7 @@
             tbody.innerHTML = '';
 
             const filterMonth = document.getElementById('kp-month-filter').value;
-            let patients = kpData || [];
+            let patients = (kpData || []).slice().sort(compareByVisitDate);
 
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
@@ -2204,7 +2256,10 @@
                     </td>
                     <td><span class="badge completed">${patient.saringan}</span></td>
                     <td>
-                        <button class="btn-padam" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kp">${t('btn_padam')}</button>
+                        <div class="action-btn-group">
+                            <button type="button" class="btn-edit" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kp">${t('btn_edit')}</button>
+                            <button class="btn-padam" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kp">${t('btn_padam')}</button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -2299,7 +2354,7 @@
             const clinicName = document.getElementById('kp-select').options[document.getElementById('kp-select').selectedIndex].text;
             const filterMonth = document.getElementById('kp-month-filter').value;
             
-            let patients = kpData || [];
+            let patients = (kpData || []).slice().sort(compareByVisitDate);
             
             if (filterMonth) {
                 patients = patients.filter(p => p.tarikh && p.tarikh.startsWith(filterMonth));
@@ -2370,6 +2425,10 @@
                 return;
             }
 
+            // 1b. Edit button
+            const editBtn = e.target.closest('.btn-edit');
+            if (editBtn) { openEditModal(editBtn); return; }
+
             // 2. Padam (Delete) Button
             if (!e.target.classList.contains('btn-padam')) return;
 
@@ -2390,6 +2449,65 @@
                 .catch(function(error) {
                     alert(t('alert_del_fail') + error.message);
                 });
+        });
+
+        // --- EDIT RECORD MODAL ---
+        let editCtx = null;
+        function openEditModal(btn) {
+            const moduleType = btn.getAttribute('data-module');
+            const clinicId = btn.getAttribute('data-clinic');
+            const key = btn.getAttribute('data-key');
+            const rec = (moduleType === 'kk' ? kkData : kpData).find(r => r.firebaseId === key);
+            if (!rec) return;
+            editCtx = { moduleType, clinicId, key };
+            const sel = document.getElementById('edit-status');
+            const opts = moduleType === 'kk'
+                ? [['Dirujuk', t('opt_dirujuk')], ['Enggan', t('opt_enggan')]]
+                : ['BPE 0', 'BPE 1', 'BPE 2', 'BPE 3', 'BPE 4'].map(v => [v, v]);
+            sel.innerHTML = '';
+            opts.forEach(([v, label]) => {
+                const o = document.createElement('option');
+                o.value = v; o.textContent = label;
+                sel.appendChild(o);
+            });
+            document.getElementById('edit-nama').value = rec.nama || '';
+            document.getElementById('edit-ic').value = formatMobileIC(rec.ic);
+            sel.value = moduleType === 'kk' ? (rec.rujukan || '') : (rec.saringan || '');
+            document.getElementById('edit-modal').classList.add('open');
+            document.getElementById('edit-nama').focus();
+        }
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('open');
+            editCtx = null;
+        }
+        function saveEditModal() {
+            if (!editCtx) return;
+            const nama = document.getElementById('edit-nama').value.trim();
+            const ic = document.getElementById('edit-ic').value.trim();
+            const status = document.getElementById('edit-status').value;
+            if (!nama) { document.getElementById('edit-nama').focus(); return; }
+            if (!/^\d{4}$/.test(ic)) {
+                alert(t('alert_invalid_ic'));
+                document.getElementById('edit-ic').focus();
+                return;
+            }
+            const { moduleType, clinicId, key } = editCtx;
+            const payload = { nama: nama, ic: ic };
+            payload[moduleType === 'kk' ? 'rujukan' : 'saringan'] = status;
+            const saveBtn = document.getElementById('edit-save-btn');
+            saveBtn.disabled = true;
+            db.ref('screenings/' + moduleType + '/' + clinicId + '/' + key).update(payload)
+                .then(function() { closeEditModal(); })
+                .catch(function(err) { alert(t('alert_edit_fail') + err.message); })
+                .then(function() { saveBtn.disabled = false; });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('edit-ic').addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0, 4);
+            });
+            document.getElementById('edit-modal').addEventListener('click', function(e) {
+                if (e.target === this) closeEditModal();
+            });
         });
 
         // =====================================================
@@ -2962,6 +3080,14 @@
                 btn_saved:        '✓ Berjaya Disimpan',
                 btn_submit_label: 'Simpan Rekod',
                 btn_padam:        'Padam',
+                btn_edit:         'Edit',
+                edit_title:       'Kemas Kini Rekod',
+                edit_name:        'Nama Pesakit',
+                edit_ic:          'No. IC Pesakit (4 Digit Terakhir)',
+                edit_status:      'Status / Skor BPE',
+                edit_save:        'Simpan',
+                edit_cancel:      'Batal',
+                alert_edit_fail:  'Gagal mengemas kini rekod: ',
                 alert_no_clinic_kk: 'Sila pilih Klinik Kesihatan terlebih dahulu!',
                 alert_no_clinic_kp: 'Sila pilih Klinik Pergigian terlebih dahulu!',
                 alert_invalid_ic: 'Sila masukkan tepat 4 digit No. IC pesakit!',
@@ -3048,6 +3174,14 @@
                 btn_saved:        '✓ Saved Successfully',
                 btn_submit_label: 'Submit Record',
                 btn_padam:        'Delete',
+                btn_edit:         'Edit',
+                edit_title:       'Edit Record',
+                edit_name:        'Patient Name',
+                edit_ic:          'Patient IC No. (Last 4 Digits)',
+                edit_status:      'Status / BPE Score',
+                edit_save:        'Save',
+                edit_cancel:      'Cancel',
+                alert_edit_fail:  'Failed to update record: ',
                 alert_no_clinic_kk: 'Please select a Health Clinic first!',
                 alert_no_clinic_kp: 'Please select a Dental Clinic first!',
                 alert_invalid_ic: 'Please enter exactly 4 digits for Patient IC No!',
@@ -3132,5 +3266,20 @@
             if (kpClinic) listenToKP(kpClinic);
         });
     </script>
+<div id="edit-modal" class="edit-modal-overlay" role="dialog" aria-modal="true">
+    <div class="edit-modal">
+        <h3 data-i18n="edit_title">Kemas Kini Rekod</h3>
+        <div class="form-group"><label data-i18n="edit_name">Nama Pesakit</label>
+            <input type="text" id="edit-nama" class="form-control" maxlength="120"></div>
+        <div class="form-group"><label data-i18n="edit_ic">No. IC Pesakit (4 Digit Terakhir)</label>
+            <input type="text" id="edit-ic" class="form-control" inputmode="numeric" maxlength="4"></div>
+        <div class="form-group"><label data-i18n="edit_status">Status / Skor BPE</label>
+            <select id="edit-status" class="form-control"></select></div>
+        <div class="edit-modal-actions">
+            <button type="button" class="btn btn-small" style="background:#8e8e93;" onclick="closeEditModal()" data-i18n="edit_cancel">Batal</button>
+            <button type="button" class="btn btn-small" id="edit-save-btn" onclick="saveEditModal()" data-i18n="edit_save">Simpan</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
