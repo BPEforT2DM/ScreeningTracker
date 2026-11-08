@@ -724,6 +724,13 @@
         .dot-kb { background-color: #ffeaa7; border: 1px solid rgba(0, 0, 0, 0.18); }
         .dot-kl { background-color: #ff7675; }
         .dot-pc { background-color: #55efc4; }
+        /* Championship legend dots (exact match to donut slice colours) */
+        .dot-m-kb { background-color: #2563EB; }
+        .dot-m-kl { background-color: #06B6D4; }
+        .dot-m-pc { background-color: #BAE6FD; border: 1px solid rgba(0, 0, 0, 0.08); }
+        .dot-y-kb { background-color: #7C3AED; }
+        .dot-y-kl { background-color: #F43F5E; }
+        .dot-y-pc { background-color: #F472B6; }
 
         /* Cute Popover Tooltip (Pastel Liquid Glass Aesthetic) */
         .chartjs-popover-tooltip {
@@ -1816,9 +1823,9 @@
                             <div class="champ-badge-line2">(- Kes)</div>
                         </div>
                         <div class="chart-legend-dots">
-                            <span><i class="dot dot-kb"></i> KB</span>
-                            <span><i class="dot dot-kl"></i> KL</span>
-                            <span><i class="dot dot-pc"></i> PC</span>
+                            <span><i class="dot dot-m-kb"></i> KB</span>
+                            <span><i class="dot dot-m-kl"></i> KL</span>
+                            <span><i class="dot dot-m-pc"></i> PC</span>
                         </div>
                     </div>
                     <div class="champ-subcard">
@@ -1832,9 +1839,9 @@
                             <div class="champ-badge-line2">(- Kes)</div>
                         </div>
                         <div class="chart-legend-dots">
-                            <span><i class="dot dot-kb"></i> KB</span>
-                            <span><i class="dot dot-kl"></i> KL</span>
-                            <span><i class="dot dot-pc"></i> PC</span>
+                            <span><i class="dot dot-m-kb"></i> KB</span>
+                            <span><i class="dot dot-m-kl"></i> KL</span>
+                            <span><i class="dot dot-m-pc"></i> PC</span>
                         </div>
                     </div>
                     </div>
@@ -1854,9 +1861,9 @@
                             <div class="champ-badge-line2">(- Kes)</div>
                         </div>
                         <div class="chart-legend-dots">
-                            <span><i class="dot dot-kb"></i> KB</span>
-                            <span><i class="dot dot-kl"></i> KL</span>
-                            <span><i class="dot dot-pc"></i> PC</span>
+                            <span><i class="dot dot-y-kb"></i> KB</span>
+                            <span><i class="dot dot-y-kl"></i> KL</span>
+                            <span><i class="dot dot-y-pc"></i> PC</span>
                         </div>
                     </div>
                     <div class="champ-subcard">
@@ -1870,9 +1877,9 @@
                             <div class="champ-badge-line2">(- Kes)</div>
                         </div>
                         <div class="chart-legend-dots">
-                            <span><i class="dot dot-kb"></i> KB</span>
-                            <span><i class="dot dot-kl"></i> KL</span>
-                            <span><i class="dot dot-pc"></i> PC</span>
+                            <span><i class="dot dot-y-kb"></i> KB</span>
+                            <span><i class="dot dot-y-kl"></i> KL</span>
+                            <span><i class="dot dot-y-pc"></i> PC</span>
                         </div>
                     </div>
                     </div>
@@ -2888,7 +2895,9 @@
             // Strictly format: "[Nama Klinik] ([Jumlah Rekod])" e.g. "KK Kota Bharu (2)"
             const clinic = dataPoint.label || '';
             const val = dataPoint.parsed || 0;
-            tooltipEl.textContent = `${clinic} (${val})`;
+            const bg = dataPoint.dataset.backgroundColor;
+            const dotColor = Array.isArray(bg) ? bg[dataPoint.dataIndex] : bg;
+            tooltipEl.innerHTML = `<i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor};margin-right:5px;vertical-align:middle;border:1px solid rgba(0,0,0,0.08)"></i>${clinic} (${val})`;
 
             // Position centered directly over the hovered segment
             tooltipEl.style.left = tooltip.caretX + 'px';
@@ -3126,9 +3135,9 @@
 
             const kkNames = Object.keys(kkCounts);
             const kpNames = Object.keys(kpCounts);
-            const COOL = ['#0284c7', '#38bdf8', '#bae6fd'];
-            const WARM_KK = ['#a855f7', '#c084fc', '#e9d5ff'];
-            const WARM_KP = ['#f43f5e', '#fb7185', '#fecdd3'];
+            const COOL = ['#2563EB', '#06B6D4', '#BAE6FD'];
+            const WARM_KK = ['#7C3AED', '#F43F5E', '#F472B6'];
+            const WARM_KP = WARM_KK;
             updateDonut(chartKK, kkCounts, kkNames, COOL);
             updateDonut(chartKP, kpCounts, kpNames, COOL);
             updateDonut(chartKKY, kkYearCounts, kkNames, WARM_KK);
