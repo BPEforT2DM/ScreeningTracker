@@ -585,9 +585,43 @@
             align-items: stretch;
         }
 
+        .champ-tier {
+            background: rgba(255, 255, 255, 0.28);
+            border: 1px solid rgba(175, 130, 255, 0.28);
+            border-radius: 18px;
+            padding: 10px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 6px 22px rgba(175, 130, 255, 0.10), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .champ-tier-label {
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: #6b4fbb;
+        }
+
+        .champ-tier-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            flex: 1;
+        }
+
         .champ-subcard {
+            min-width: 0;
             background: rgba(255, 255, 255, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 16px rgba(0, 113, 227, 0.07);
             border-radius: 14px;
             padding: 12px 14px;
             display: flex;
@@ -1281,8 +1315,14 @@
                 font-size: 1.02rem;
             }
             .champ-subgrid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
                 gap: 0.65rem;
+            }
+            .champ-tier {
+                padding: 8px 6px;
+            }
+            .champ-tier-grid {
+                gap: 0.45rem;
             }
             .champ-subcard {
                 padding: 10px 8px;
@@ -1672,37 +1712,76 @@
             </div>
 
             <div class="champ-subgrid">
-                <!-- Card 3: Pecahan KK -->
-                <div class="champ-subcard">
-                    <div class="champ-subcard-title" data-i18n="dash_kk_breakdown">Pecahan KK</div>
-                    <div class="chart-wrapper">
-                        <canvas id="chart-kk-donut" aria-label="KK Breakdown Donut Chart" role="img"></canvas>
+                <!-- Tier 1: Monthly -->
+                <div class="champ-tier">
+                    <div class="champ-tier-label"><span data-i18n="champ_tier_monthly">Bulanan</span> &middot; <span class="champ-tier-month">November 2026</span></div>
+                    <div class="champ-tier-grid">
+                    <div class="champ-subcard">
+                        <div class="champ-subcard-title" data-i18n="champ_kk_monthly">Rujukan KK (Bulanan)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-kk-donut" aria-label="Rujukan KK (Bulanan) Donut Chart" role="img"></canvas>
+                        </div>
+                        <div class="champ-badge" id="badge-kk-top">
+                            <div class="champ-badge-line1">Tertinggi: -</div>
+                            <div class="champ-badge-line2">(- Kes)</div>
+                        </div>
+                        <div class="chart-legend-dots">
+                            <span><i class="dot dot-kb"></i> KB</span>
+                            <span><i class="dot dot-kl"></i> KL</span>
+                            <span><i class="dot dot-pc"></i> PC</span>
+                        </div>
                     </div>
-                    <div class="champ-badge" id="badge-kk-top">
-                        <div class="champ-badge-line1">Tertinggi: -</div>
-                        <div class="champ-badge-line2">(- Kes)</div>
+                    <div class="champ-subcard">
+                        <div class="champ-subcard-title" data-i18n="champ_kp_monthly">Saringan KP (Bulanan)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-kp-donut" aria-label="Saringan KP (Bulanan) Donut Chart" role="img"></canvas>
+                        </div>
+                        <div class="champ-badge" id="badge-kp-top">
+                            <div class="champ-badge-line1">Tertinggi: -</div>
+                            <div class="champ-badge-line2">(- Kes)</div>
+                        </div>
+                        <div class="chart-legend-dots">
+                            <span><i class="dot dot-kb"></i> KB</span>
+                            <span><i class="dot dot-kl"></i> KL</span>
+                            <span><i class="dot dot-pc"></i> PC</span>
+                        </div>
                     </div>
-                    <div class="chart-legend-dots">
-                        <span><i class="dot dot-kb"></i> KB</span>
-                        <span><i class="dot dot-kl"></i> KL</span>
-                        <span><i class="dot dot-pc"></i> PC</span>
                     </div>
                 </div>
-
-                <!-- Card 4: Pecahan KP -->
-                <div class="champ-subcard">
-                    <div class="champ-subcard-title" data-i18n="dash_kp_breakdown">Pecahan KP</div>
-                    <div class="chart-wrapper">
-                        <canvas id="chart-kp-donut" aria-label="KP Breakdown Donut Chart" role="img"></canvas>
+                <!-- Tier 2: Yearly -->
+                <div class="champ-tier">
+                    <div class="champ-tier-label"><span data-i18n="champ_tier_yearly">Tahunan</span> &middot; <span class="champ-tier-year">2026</span></div>
+                    <div class="champ-tier-grid">
+                    <div class="champ-subcard">
+                        <div class="champ-subcard-title" data-i18n="champ_kk_yearly">Rujukan KK (Tahunan)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-kk-year-donut" aria-label="Rujukan KK (Tahunan) Donut Chart" role="img"></canvas>
+                        </div>
+                        <div class="champ-badge" id="badge-kk-year-top">
+                            <div class="champ-badge-line1">Tertinggi: -</div>
+                            <div class="champ-badge-line2">(- Kes)</div>
+                        </div>
+                        <div class="chart-legend-dots">
+                            <span><i class="dot dot-kb"></i> KB</span>
+                            <span><i class="dot dot-kl"></i> KL</span>
+                            <span><i class="dot dot-pc"></i> PC</span>
+                        </div>
                     </div>
-                    <div class="champ-badge" id="badge-kp-top">
-                        <div class="champ-badge-line1">Tertinggi: -</div>
-                        <div class="champ-badge-line2">(- Kes)</div>
+                    <div class="champ-subcard">
+                        <div class="champ-subcard-title" data-i18n="champ_kp_yearly">Saringan KP (Tahunan)</div>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-kp-year-donut" aria-label="Saringan KP (Tahunan) Donut Chart" role="img"></canvas>
+                        </div>
+                        <div class="champ-badge" id="badge-kp-year-top">
+                            <div class="champ-badge-line1">Tertinggi: -</div>
+                            <div class="champ-badge-line2">(- Kes)</div>
+                        </div>
+                        <div class="chart-legend-dots">
+                            <span><i class="dot dot-kb"></i> KB</span>
+                            <span><i class="dot dot-kl"></i> KL</span>
+                            <span><i class="dot dot-pc"></i> PC</span>
+                        </div>
                     </div>
-                    <div class="chart-legend-dots">
-                        <span><i class="dot dot-kb"></i> KB</span>
-                        <span><i class="dot dot-kl"></i> KL</span>
-                        <span><i class="dot dot-pc"></i> PC</span>
                     </div>
                 </div>
             </div>
@@ -2515,6 +2594,8 @@
         // =====================================================
         let chartKK = null;
         let chartKP = null;
+        let chartKKY = null;
+        let chartKPY = null;
         let cachedScreeningsData = {};
 
         function getCurrentYearMonth() {
@@ -2531,7 +2612,9 @@
             kkTotal: 0,
             kpTotal: 0,
             kkCounts: { 'KK Kota Bharu': 0, 'KK Kok Lanas': 0, 'KK Pengkalan Chepa': 0 },
-            kpCounts: { 'KP Kota Bharu': 0, 'KP Kok Lanas': 0, 'KP Pengkalan Chepa': 0 }
+            kpCounts: { 'KP Kota Bharu': 0, 'KP Kok Lanas': 0, 'KP Pengkalan Chepa': 0 },
+            kkYearCounts: { 'KK Kota Bharu': 0, 'KK Kok Lanas': 0, 'KK Pengkalan Chepa': 0 },
+            kpYearCounts: { 'KP Kota Bharu': 0, 'KP Kok Lanas': 0, 'KP Pengkalan Chepa': 0 }
         };
 
         const MONTH_NAMES_BM = [
@@ -2566,6 +2649,9 @@
             document.querySelectorAll('.dash-month-sub-label').forEach(el => {
                 el.textContent = subText;
             });
+
+            document.querySelectorAll('.champ-tier-month').forEach(el => { el.textContent = subText; });
+            document.querySelectorAll('.champ-tier-year').forEach(el => { el.textContent = activeMonth.split('-')[0]; });
 
             const badgeEl = document.getElementById('dash-active-month-badge');
             if (badgeEl) {
@@ -2668,6 +2754,18 @@
             return false;
         }
 
+        function isRecordInYear(rec, targetYear) {
+            if (!rec) return false;
+            if (rec.tarikh && typeof rec.tarikh === 'string' && rec.tarikh.trim() !== '') {
+                return rec.tarikh.startsWith(targetYear + '-');
+            }
+            if (rec.createdAt) {
+                const d = new Date(rec.createdAt);
+                if (!isNaN(d.getTime())) return String(d.getFullYear()) === targetYear;
+            }
+            return false;
+        }
+
         // Custom Cute Popover Tooltip for Donut Charts (Pastel Liquid Glass Aesthetic)
         function customDonutTooltip(context) {
             const { chart, tooltip } = context;
@@ -2742,13 +2840,14 @@
                 }
             };
 
-            const ctxKK = document.getElementById('chart-kk-donut');
-            if (ctxKK) {
-                ctxKK.addEventListener('mouseleave', () => {
-                    const tip = ctxKK.parentNode.querySelector('.chartjs-popover-tooltip');
+            const makeDonut = (id) => {
+                const ctx = document.getElementById(id);
+                if (!ctx) return null;
+                ctx.addEventListener('mouseleave', () => {
+                    const tip = ctx.parentNode.querySelector('.chartjs-popover-tooltip');
                     if (tip) { tip.style.opacity = '0'; tip.style.visibility = 'hidden'; }
                 });
-                chartKK = new Chart(ctxKK, {
+                return new Chart(ctx, {
                     ...commonChartConfig,
                     data: {
                         labels: ['Empty'],
@@ -2761,79 +2860,53 @@
                         }]
                     }
                 });
-            }
+            };
+            chartKK = makeDonut('chart-kk-donut');
+            chartKP = makeDonut('chart-kp-donut');
+            chartKKY = makeDonut('chart-kk-year-donut');
+            chartKPY = makeDonut('chart-kp-year-donut');
+        }
 
-            const ctxKP = document.getElementById('chart-kp-donut');
-            if (ctxKP) {
-                ctxKP.addEventListener('mouseleave', () => {
-                    const tip = ctxKP.parentNode.querySelector('.chartjs-popover-tooltip');
-                    if (tip) { tip.style.opacity = '0'; tip.style.visibility = 'hidden'; }
-                });
-                chartKP = new Chart(ctxKP, {
-                    ...commonChartConfig,
-                    data: {
-                        labels: ['Empty'],
-                        datasets: [{
-                            data: [1],
-                            backgroundColor: ['rgba(0, 113, 227, 0.08)'],
-                            borderColor: ['transparent'],
-                            borderWidth: 2,
-                            hoverOffset: 3
-                        }]
-                    }
-                });
+        function renderTopBadge(badgeId, counts, names) {
+            const el = document.getElementById(badgeId);
+            if (!el) return;
+            const max = Math.max(...names.map(n => counts[n] || 0));
+            if (max === 0) {
+                el.innerHTML = `<div class="champ-badge-empty">${t('dash_no_data')}</div>`;
+                return;
             }
+            const clinicText = names.filter(c => counts[c] === max).join(' & ');
+            const caseUnit = (currentLang === 'en' && max === 1) ? 'Case' : t('dash_case_unit');
+            el.innerHTML = `
+                <div class="champ-badge-line1">${t('dash_top_prefix')}${clinicText}</div>
+                <div class="champ-badge-line2">(${max} ${caseUnit})</div>
+            `;
         }
 
         function renderDashboardBadges() {
-            const kkBadge = document.getElementById('badge-kk-top');
-            const kpBadge = document.getElementById('badge-kp-top');
+            const kkNames = ['KK Kota Bharu', 'KK Kok Lanas', 'KK Pengkalan Chepa'];
+            const kpNames = ['KP Kota Bharu', 'KP Kok Lanas', 'KP Pengkalan Chepa'];
+            renderTopBadge('badge-kk-top', latestDashboardStats.kkCounts, kkNames);
+            renderTopBadge('badge-kp-top', latestDashboardStats.kpCounts, kpNames);
+            renderTopBadge('badge-kk-year-top', latestDashboardStats.kkYearCounts, kkNames);
+            renderTopBadge('badge-kp-year-top', latestDashboardStats.kpYearCounts, kpNames);
+        }
 
-            // KK Top Performer Badge
-            if (kkBadge) {
-                const kkCounts = latestDashboardStats.kkCounts;
-                const kkMax = Math.max(
-                    kkCounts['KK Kota Bharu'] || 0,
-                    kkCounts['KK Kok Lanas'] || 0,
-                    kkCounts['KK Pengkalan Chepa'] || 0
-                );
-
-                if (kkMax === 0) {
-                    kkBadge.innerHTML = `<div class="champ-badge-empty">${t('dash_no_data')}</div>`;
-                } else {
-                    const topClinics = ['KK Kota Bharu', 'KK Kok Lanas', 'KK Pengkalan Chepa']
-                        .filter(c => kkCounts[c] === kkMax);
-                    const clinicText = topClinics.join(' & ');
-                    const caseUnit = (currentLang === 'en' && kkMax === 1) ? 'Case' : t('dash_case_unit');
-                    kkBadge.innerHTML = `
-                        <div class="champ-badge-line1">${t('dash_top_prefix')}${clinicText}</div>
-                        <div class="champ-badge-line2">(${kkMax} ${caseUnit})</div>
-                    `;
-                }
+        function updateDonut(chart, counts, names) {
+            if (!chart) return;
+            const total = names.reduce((a, n) => a + (counts[n] || 0), 0);
+            if (total === 0) {
+                chart.data.labels = ['Empty'];
+                chart.data.datasets[0].data = [1];
+                chart.data.datasets[0].backgroundColor = ['rgba(0, 113, 227, 0.08)'];
+                chart.data.datasets[0].borderColor = ['transparent'];
+            } else {
+                chart.data.labels = names;
+                chart.data.datasets[0].data = names.map(n => counts[n] || 0);
+                chart.data.datasets[0].backgroundColor = ['#ffeaa7', '#ff7675', '#55efc4'];
+                chart.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.95)';
             }
-
-            // KP Top Performer Badge
-            if (kpBadge) {
-                const kpCounts = latestDashboardStats.kpCounts;
-                const kpMax = Math.max(
-                    kpCounts['KP Kota Bharu'] || 0,
-                    kpCounts['KP Kok Lanas'] || 0,
-                    kpCounts['KP Pengkalan Chepa'] || 0
-                );
-
-                if (kpMax === 0) {
-                    kpBadge.innerHTML = `<div class="champ-badge-empty">${t('dash_no_data')}</div>`;
-                } else {
-                    const topClinics = ['KP Kota Bharu', 'KP Kok Lanas', 'KP Pengkalan Chepa']
-                        .filter(c => kpCounts[c] === kpMax);
-                    const clinicText = topClinics.join(' & ');
-                    const caseUnit = (currentLang === 'en' && kpMax === 1) ? 'Case' : t('dash_case_unit');
-                    kpBadge.innerHTML = `
-                        <div class="champ-badge-line1">${t('dash_top_prefix')}${clinicText}</div>
-                        <div class="champ-badge-line2">(${kpMax} ${caseUnit})</div>
-                    `;
-                }
-            }
+            chart.update();
         }
 
         function updateMonthlyDashboard(screeningsData) {
@@ -2929,45 +3002,30 @@
             const kpPcEl = document.getElementById('dash-kp-pc-count');
             if (kpPcEl) kpPcEl.textContent = kpCounts['KP Pengkalan Chepa'] || 0;
 
-            // Update KK Chart
-            if (chartKK) {
-                if (totalKkReferred === 0) {
-                    chartKK.data.labels = ['Empty'];
-                    chartKK.data.datasets[0].data = [1];
-                    chartKK.data.datasets[0].backgroundColor = ['rgba(0, 113, 227, 0.08)'];
-                    chartKK.data.datasets[0].borderColor = ['transparent'];
-                } else {
-                    chartKK.data.labels = ['KK Kota Bharu', 'KK Kok Lanas', 'KK Pengkalan Chepa'];
-                    chartKK.data.datasets[0].data = [
-                        kkCounts['KK Kota Bharu'],
-                        kkCounts['KK Kok Lanas'],
-                        kkCounts['KK Pengkalan Chepa']
-                    ];
-                    chartKK.data.datasets[0].backgroundColor = ['#ffeaa7', '#ff7675', '#55efc4'];
-                    chartKK.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.95)';
-                }
-                chartKK.update();
-            }
+            // Yearly aggregates (January-December of the active year)
+            const targetYear = targetMonth.split('-')[0];
+            const kkYearCounts = { 'KK Kota Bharu': 0, 'KK Kok Lanas': 0, 'KK Pengkalan Chepa': 0 };
+            const kpYearCounts = { 'KP Kota Bharu': 0, 'KP Kok Lanas': 0, 'KP Pengkalan Chepa': 0 };
+            Object.keys(kkCodeMap).forEach(code => {
+                const kkRecs = (data.kk && data.kk[code]) || {};
+                Object.keys(kkRecs).forEach(k => {
+                    const rec = kkRecs[k];
+                    if (rec && rec.rujukan === 'Dirujuk' && isRecordInYear(rec, targetYear)) kkYearCounts[kkCodeMap[code]]++;
+                });
+                const kpRecs = (data.kp && data.kp[code]) || {};
+                Object.keys(kpRecs).forEach(k => {
+                    if (isRecordInYear(kpRecs[k], targetYear)) kpYearCounts[kpCodeMap[code]]++;
+                });
+            });
+            latestDashboardStats.kkYearCounts = kkYearCounts;
+            latestDashboardStats.kpYearCounts = kpYearCounts;
 
-            // Update KP Chart
-            if (chartKP) {
-                if (totalKpScreened === 0) {
-                    chartKP.data.labels = ['Empty'];
-                    chartKP.data.datasets[0].data = [1];
-                    chartKP.data.datasets[0].backgroundColor = ['rgba(0, 113, 227, 0.08)'];
-                    chartKP.data.datasets[0].borderColor = ['transparent'];
-                } else {
-                    chartKP.data.labels = ['KP Kota Bharu', 'KP Kok Lanas', 'KP Pengkalan Chepa'];
-                    chartKP.data.datasets[0].data = [
-                        kpCounts['KP Kota Bharu'],
-                        kpCounts['KP Kok Lanas'],
-                        kpCounts['KP Pengkalan Chepa']
-                    ];
-                    chartKP.data.datasets[0].backgroundColor = ['#ffeaa7', '#ff7675', '#55efc4'];
-                    chartKP.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.95)';
-                }
-                chartKP.update();
-            }
+            const kkNames = Object.keys(kkCounts);
+            const kpNames = Object.keys(kpCounts);
+            updateDonut(chartKK, kkCounts, kkNames);
+            updateDonut(chartKP, kpCounts, kpNames);
+            updateDonut(chartKKY, kkYearCounts, kkNames);
+            updateDonut(chartKPY, kpYearCounts, kpNames);
 
             // Render competitive badges and active month labels
             renderDashboardBadges();
@@ -3025,6 +3083,12 @@
                 dash_kk_ref_title:    'Kes Dirujuk KK',
                 dash_kp_scr_title:    'Kes Disaring KP',
                 champ_master_title:   'Kejuaraan BPE',
+                champ_tier_monthly:   'Bulanan',
+                champ_tier_yearly:    'Tahunan',
+                champ_kk_monthly:     'Rujukan KK (Bulanan)',
+                champ_kp_monthly:     'Saringan KP (Bulanan)',
+                champ_kk_yearly:      'Rujukan KK (Tahunan)',
+                champ_kp_yearly:      'Saringan KP (Tahunan)',
                 dash_kk_breakdown:    'Pecahan KK',
                 dash_kp_breakdown:    'Pecahan KP',
                 dash_kk_tag:          'Semua 3 KK',
@@ -3125,6 +3189,12 @@
                 dash_kk_ref_title:    'Referred from KK',
                 dash_kp_scr_title:    'Screened at KP',
                 champ_master_title:   'BPE Championship',
+                champ_tier_monthly:   'Monthly',
+                champ_tier_yearly:    'Yearly',
+                champ_kk_monthly:     'KK Referrals (Monthly)',
+                champ_kp_monthly:     'KP Screenings (Monthly)',
+                champ_kk_yearly:      'KK Referrals (Yearly)',
+                champ_kp_yearly:      'KP Screenings (Yearly)',
                 dash_kk_breakdown:    'KK Breakdown',
                 dash_kp_breakdown:    'KP Breakdown',
                 dash_kk_tag:          'All 3 KK Clinics',
