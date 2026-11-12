@@ -2632,9 +2632,10 @@
                     alert(t('alert_save_fail') + error.message);
                     submitBtn.textContent = t('btn_submit_label');
                 } else {
+                    const preservedDate = document.getElementById('kk-tarikh').value || formData.tarikh;
                     form.reset();
                     toggleNoPhone(document.getElementById('kk-no-telefon'));
-                    document.getElementById('kk-tarikh').value = new Date().toISOString().split('T')[0];
+                    document.getElementById('kk-tarikh').value = preservedDate;
                     submitBtn.textContent = t('btn_saved');
                     submitBtn.style.background = '#28a745';
                     setTimeout(function () {
