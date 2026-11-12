@@ -882,6 +882,50 @@
             box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
         }
 
+        .form-control:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .form-group label.no-phone-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 0;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.25s ease;
+        }
+
+        .form-group label.no-phone-option:hover {
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .form-group label.no-phone-option:has(input:checked) {
+            background: rgba(0, 113, 227, 0.1);
+            border-color: rgba(0, 113, 227, 0.35);
+            color: var(--accent-blue);
+        }
+
+        .form-group label.no-phone-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
+        }
+
         .form-row {
             display: flex;
             gap: 12px;
@@ -2125,6 +2169,10 @@
                             <label>4. <span data-i18n="label_telefon">No. Telefon</span></label>
                             <input type="tel" id="kk-telefon" class="form-control" inputmode="numeric" maxlength="12"
                                 oninput="formatPhoneInput(this)" required>
+                            <label class="no-phone-option" for="kk-no-telefon">
+                                <input type="checkbox" id="kk-no-telefon" onchange="toggleNoPhone(this)">
+                                <span data-i18n="label_tiada_telefon">Tiada No. Telefon</span>
+                            </label>
                         </div>
                         <div class="form-group">
                             <label>5. <span data-i18n="label_rujukan_kk">Rujukan untuk Saringan BPE</span></label>
@@ -2425,6 +2473,21 @@
             }
         }
 
+        function toggleNoPhone(checkbox) {
+            const telInput = document.getElementById('kk-telefon');
+            if (!telInput) return;
+            if (checkbox && checkbox.checked) {
+                telInput.value = '';
+                telInput.disabled = true;
+                telInput.required = false;
+                telInput.style.opacity = '0.5';
+            } else {
+                telInput.disabled = false;
+                telInput.required = true;
+                telInput.style.opacity = '1';
+            }
+        }
+
         // --- KLINIK KESIHATAN REALTIME LISTENERS & LOGIC ---
         function listenToKK(clinicId) {
             if (currentKkClinic) {
@@ -2533,13 +2596,20 @@
                 return;
             }
 
+            const noPhoneCheckbox = document.getElementById('kk-no-telefon');
+            const hasNoPhone = !!(noPhoneCheckbox && noPhoneCheckbox.checked);
             const telInput = document.getElementById('kk-telefon');
-            const telVal = telInput ? telInput.value.trim() : '';
-            const rawDigits = telVal.replace(/\D/g, '');
-            if (rawDigits.length < 9 || rawDigits.length > 11) {
-                alert(t('alert_invalid_phone'));
-                if (telInput) telInput.focus();
-                return;
+            let telVal = telInput ? telInput.value.trim() : '';
+
+            if (hasNoPhone) {
+                telVal = 'N/A';
+            } else {
+                const rawDigits = telVal.replace(/\D/g, '');
+                if (rawDigits.length < 9 || rawDigits.length > 11) {
+                    alert(t('alert_invalid_phone'));
+                    if (telInput) telInput.focus();
+                    return;
+                }
             }
 
             submitBtn.disabled = true;
@@ -2563,6 +2633,7 @@
                     submitBtn.textContent = t('btn_submit_label');
                 } else {
                     form.reset();
+                    toggleNoPhone(document.getElementById('kk-no-telefon'));
                     document.getElementById('kk-tarikh').value = new Date().toISOString().split('T')[0];
                     submitBtn.textContent = t('btn_saved');
                     submitBtn.style.background = '#28a745';
@@ -3447,6 +3518,7 @@
                 label_nama: 'Nama Penuh Pesakit',
                 label_ic: 'No IC Pesakit (4 Digit Terakhir)',
                 label_telefon: 'No. Telefon',
+                label_tiada_telefon: 'Tiada No. Telefon',
                 label_rujukan_kk: 'Rujukan untuk Saringan BPE',
                 label_pegawai: 'Nama Pegawai',
                 label_rn: 'No. RN',
@@ -3552,6 +3624,7 @@
                 label_nama: 'Patient Full Name',
                 label_ic: 'Patient IC No (Last 4 digits)',
                 label_telefon: 'Phone No.',
+                label_tiada_telefon: 'No Contact Information',
                 label_rujukan_kk: 'Referral for BPE Screening',
                 label_pegawai: 'Officer Name',
                 label_rn: 'RN No.',
