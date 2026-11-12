@@ -2808,8 +2808,9 @@
                     alert(t('alert_save_fail') + error.message);
                     submitBtn.textContent = t('btn_submit_label');
                 } else {
+                    const preservedDate = document.getElementById('f-tarikh').value || formData.tarikh;
                     form.reset();
-                    document.getElementById('f-tarikh').value = new Date().toISOString().split('T')[0];
+                    document.getElementById('f-tarikh').value = preservedDate;
                     submitBtn.textContent = t('btn_saved');
                     submitBtn.style.background = '#28a745';
                     setTimeout(function () {
