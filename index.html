@@ -1022,6 +1022,31 @@
             color: #005bb5;
         }
 
+        /* BPE Score Color-Coded Badges (KP Table) */
+        .badge.bpe-badge {
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .badge.bpe-zero {
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.35);
+            color: #248a3d;
+        }
+
+        .badge.bpe-green {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #15803D;
+        }
+
+        .badge.bpe-red {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #B91C1C;
+        }
+
         /* Delete / Padam Button */
         .btn-padam {
             background: rgba(255, 77, 79, 0.12);
@@ -2703,6 +2728,14 @@
             });
         }
 
+        function getBpeBadgeClass(score) {
+            const val = (score || '').toString().trim().toUpperCase();
+            if (/\b[12]\b/.test(val)) return 'bpe-badge bpe-green';
+            if (/\b[34]\b/.test(val)) return 'bpe-badge bpe-red';
+            if (/\b0\b/.test(val)) return 'bpe-badge bpe-zero';
+            return 'bpe-badge completed';
+        }
+
         function renderKP(clinicId) {
             const tbody = document.getElementById('kp-tbody');
             tbody.innerHTML = '';
@@ -2720,6 +2753,7 @@
             }
 
             patients.forEach(patient => {
+                const bpeBadgeClass = getBpeBadgeClass(patient.saringan);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${patient.tarikh}</td>
@@ -2731,7 +2765,7 @@
                         <span class="val-desktop">${patient.ic}</span>
                         <span class="val-mobile">${formatMobileIC(patient.ic)}</span>
                     </td>
-                    <td><span class="badge completed">${patient.saringan}</span></td>
+                    <td><span class="badge ${bpeBadgeClass}">${patient.saringan}</span></td>
                     <td>
                         <div class="action-btn-group">
                             <button type="button" class="btn-edit" data-key="${patient.firebaseId}" data-clinic="${clinicId}" data-module="kp">${t('btn_edit')}</button>
